@@ -41,7 +41,7 @@ function currentContainer(object){
     	clearCanvas: false
  		}
 	});
-	
+
 	function completeAnim(){
 		complete = false;
 		document.body.removeEventListener('mousedown', mouseDown);
