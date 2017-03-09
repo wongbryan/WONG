@@ -29,19 +29,6 @@ function currentContainer(object){
 	}
 }
 
-	var animation = bodymovin.loadAnimation({
-		container: document.getElementById('container'),
-		loop: false,
-		autoplay: false,
-		renderer: 'svg',
-		path: 'assets/WONG.json',
-		rendererSettings: {
-
-   		scaleMode: 'noScale',
-    	clearCanvas: false
- 		}
-	});
-
 	function completeAnim(){
 		complete = false;
 		document.body.removeEventListener('mousedown', mouseDown);
