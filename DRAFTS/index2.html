@@ -1,0 +1,210 @@
+<!DOCTYPE HTML>
+<link rel="stylesheet" type="text/css" href="Aktiv Grotesk/AktivGrotesk.css"/>
+<html>
+<head>
+	<title></title>
+</head>
+<style>
+
+	#container{
+	max-width: 100vw; 
+	max-height: 100vh; 
+	overflow: hidden; 
+	background-color: white; 
+	z-index: 2000;
+	}
+
+	#counter{
+		font-family: Aktiv Grotesk Light Italic; 
+		color: white; 
+		font-size: 20px; 
+		z-index:5000;
+		position: absolute;
+		bottom: 10%;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	#nav{
+		position: absolute;
+		top: 96px;
+		left: 50px;
+	}
+
+	.bar{
+	width: 105px;
+	height: 20px;
+	margin: 0;
+	margin-bottom: 0px;
+	background-color: black;
+	position: relative;
+	transition: all .25s;
+	top: 0;
+	}
+
+	.bar a{
+		font-family: Aktiv Grotesk Light Italic;
+		background-color: white;
+		font-size: 12px;
+		line-height: 1;
+		padding-right: 5px;
+		padding-left: 5px;
+		padding-top: 3px;
+		padding-bottom: 3px;
+		display: none;
+		position: relative;
+		top: -2px;
+		cursor: pointer;
+	}
+
+	.flag{
+		font-family: Aktiv Grotesk Black;
+		font-size: 37px;
+		position: absolute;
+		top: 50px;
+		left: 47px;
+	}
+}
+
+</style>
+<script src="scripts/bodymovin.js"></script>
+<body style="margin: 0;">
+
+<!-- <div class="flag">WONG</div> -->
+<div id="nav" class="group">
+		<div class="bar">
+			<a style="margin-left: 37px; position: relative; font-family: Aktiv Grotesk Black; padding: 3px; padding-top: 0; font-size: 20px; display: block; z-index: 2;">WONG</a>
+		</div>
+		<div class="bar">
+			<a style="margin-left: 31px;">WEB</a>
+		</div>
+		<div class="bar">
+			<a style="margin-left: 15px;">MOVES</a>
+		</div>
+		<div class="bar">
+			<a style="margin-left: 0px;">ENDURE</a>
+		</div>
+		<div class="bar">
+			<a style="margin-left: 15px;">PHOTO</a>
+		</div>
+</div>
+<div id="container" ></div>
+<div id="counter" >PRESS AND HOLD TO CONTINUE</div>
+</body>
+<script>
+	var animation = bodymovin.loadAnimation({
+		container: document.getElementById('container'),
+		loop: false,
+		autoplay: false,
+		renderer: 'svg',
+		path: 'WONG.json',
+		rendererSettings: {
+
+    scaleMode: 'noScale',
+    clearCanvas: false
+  }
+	});
+
+	function remove(){
+		console.log('done');
+		var child = document.getElementById('container');
+		document.body.removeChild(child);
+	}
+
+	var mousedown = 0;
+	var timer = 0;
+	var interval;
+
+	function play(){
+		console.log(timer);
+		if (timer>30 && mousedown != 0){
+			clearInterval(interval);
+			animation.stop();
+			animation.play();
+			timer = 0;
+		}
+		else{
+			timer++;
+		}
+	}
+
+	document.body.addEventListener('mousedown', function(){
+		interval = setInterval(function(){play();}, 50);
+		mousedown++;
+	});
+
+	document.body.addEventListener('mouseup', function(){
+		animation.stop();
+		document.getElementById('container').style.opacity = 0;
+		console.log(timer);
+		timer = 0;
+		mousedown--;
+	});
+
+	var container = document.getElementById('container');
+	document.body.removeChild(container);
+	function Nav(){
+		this.bars = document.getElementsByClassName('bar');
+		this.open = false;
+		this.DOMObject = document.getElementById('nav');
+		this.textNodes = this.DOMObject.getElementsByTagName('a');
+
+		this.expandDown = function(){
+			for (var i=0; i<this.bars.length; i++){
+			this.bars[i].style.marginBottom = 3 + "px";
+			}
+		}
+
+		this.expandRight = function(){ 
+			for (var i=0; i<this.bars.length; i++){
+			this.bars[i].style.width = 117 + "px";
+			}
+		}
+
+
+		this.collapseLeft = function(){
+			for (var i=0; i<this.bars.length; i++){
+				this.bars[i].style.width = 30 + "px";
+			}
+		}	
+
+		this.collapseUp = function(){
+			for (var i=0; i<this.bars.length; i++){
+				this.bars[i].style.marginBottom = -13 + "px";
+			}
+		}
+
+		this.showTextNodes = function(){
+			for (var i=0; i<this.bars.length; i++){
+			this.textNodes[i].style.display = "inline";
+			}
+		}
+
+		this.hideTextNodes = function(){
+			for (var i=0; i<this.bars.length; i++){
+			this.textNodes[i].style.display = "none";
+			}
+		}
+	}
+
+	var navSquare = new Nav;
+	navSquare.DOMObject.addEventListener('mouseenter', function(){
+			console.log("expand");
+			navSquare.expandDown();
+			setTimeout(function(){navSquare.expandRight();}, 200);
+			setTimeout(function(){navSquare.showTextNodes();}, 500);
+			navSquare.open = true;
+	})
+
+	navSquare.DOMObject.addEventListener('mouseleave', function(){
+			console.log("hide");
+			navSquare.hideTextNodes();
+			setTimeout(function(){navSquare.collapseLeft();}, 200);
+			setTimeout(function(){navSquare.collapseUp();}, 500);
+			navSquare.open = false;
+	})
+	
+
+
+</script>
+</html>

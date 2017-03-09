@@ -1,0 +1,20 @@
+@font-face{
+	font-family: 'Druk Medium';
+	src: url('Druk-Medium-Web.ttf'), 
+	url(Druk-Medium-Web.woff) format('woff');
+	font-weight: regular;
+}
+
+@font-face{
+	font-family: 'Druk Bold';
+	src: url('Druk-Bold.ttf'),
+	url(Druk-Bold-Web.woff) format('woff');
+	font-weight: regular;
+}
+
+@font-face{
+	font-family: 'Druk Super';
+	src: url('DrukWide-Super.ttf'), 
+	url(DrukWide-Super-Web.woff) format('woff');
+	font-weight: regular;
+}

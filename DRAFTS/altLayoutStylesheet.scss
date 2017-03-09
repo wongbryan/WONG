@@ -1,0 +1,184 @@
+/*variables*/
+
+$red: rgb(255, 0, 0);
+
+/*main*/
+
+.navPanel{
+	height: 100vh;
+	width: 22vw;
+	z-index: 5000;
+	background-color: white;
+	position: fixed;
+}
+
+.mainContent{
+	z-index: 0;
+	height: 100vh;
+	width: 100vw;
+	position: absolute;
+	top: 0; left: 0;
+}
+
+.description{
+	position: absolute;
+	top: 30%;
+	right: 26%;
+	width: 100px;
+}
+
+.description{
+	header{
+		font-family: univers_67_condensedbold;
+		font-size: 17px;
+		border-top: solid black 40px;
+		padding-right: 50px;
+		padding-top: 5px;
+		white-space: nowrap;
+	}
+	p{
+		font-family: univers_45_lightregular;
+		font-size: 11px;
+	}
+}
+
+.page{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	transition: all .5s;
+}
+
+/*photo packaging*/
+
+.dominant{
+	height: 395px;
+	width: 395px;
+	position: absolute;
+	top: 317px;
+	transform: translate(-50%,-50%);
+	left: 50%;
+}
+
+/*things*/
+
+#number{
+	.line{
+		width: 100px;
+		height: 5px;
+	}
+}
+
+.flag{
+	font-family: univers_75_blackregular;
+	font-size: 3.25em;
+	font-weight: bold;
+}
+
+#wong {
+	.line{
+		border-top: solid black 40px;
+		width: 110px;
+		transform: translate(0px, -35px);
+	}
+}
+
+#wong{
+	margin-top: 50px;
+	margin-left: 50px;
+	margin-bottom: 100px;
+	font-size: 60px;
+}
+
+.about{
+	margin-top: 110px;
+	margin-left: 55px;
+	width: 170px;
+}
+
+.about{
+	header{
+		font-family: univers_75_blackregular;
+		font-size: 45px;
+		margin: 0;
+		white-space: nowrap;
+	}
+
+	p{
+		margin: 0;
+		font-family: univers_45_lightregular;
+		font-size: 13px;
+	}
+}
+
+#renshou{
+	right: 0;
+}
+
+.line{
+	position: absolute;
+	width: 5px;
+	height: 50px;
+}
+
+.hor{
+	border-bottom: solid black 5px;
+}
+
+.optionsContainer{
+	position: absolute;
+	top: 35%;
+	left: 55px;
+}
+
+.optionHead:hover{
+	cursor: pointer;
+}
+
+.group{
+	margin: 0;
+	margin-bottom: 0px;
+}
+
+.bar{
+	width: 100px;
+	height: 15px;
+	margin: 0;
+	margin-bottom: -3px;
+	background-color: black;
+	position: relative;
+	transition: all .25s;
+	top: 0;
+}
+
+.bar{
+	a{
+		font-family: univers_57_condensedregular;
+		background-color: white;
+		font-weight: bold;
+		font-size: 15px;
+		line-height: 1;
+		padding-right: 5px;
+		padding-left: 5px;
+		opacity: 0;
+	}
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+.circle{
+	position: absolute;
+	top: 32%;
+	left: -15px;
+	height: 7.5px;
+	width: 7.5px;
+	background-color: $red;
+	@include border-radius(7.5px);
+	transition: all .5s;
+}

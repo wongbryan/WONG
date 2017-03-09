@@ -1,0 +1,70 @@
+/*900 == black, bold == bold, normal == medium, 100 == light*/
+
+/*Univers Regular*/
+
+@font-face{
+	font-family: 'Univers';
+	font-weight: 900;
+	font-style: normal;
+	src: url('Univers-Black.otf');
+}
+
+@font-face{
+	font-family: 'Univers';
+	font-weight: bold;
+	font-style: normal;
+	src: url('Univers-Bold.otf');
+}
+
+@font-face{
+	font-family: Univers;
+	font-weight: normal;
+	font-style: normal;
+	src: url(Univers.otf);
+}
+
+@font-face{
+	font-family: 'Univers';
+	font-weight: 100;
+	font-style: normal;
+	src: url('Univers-Light.otf');
+}
+
+/*Univers Condensed*/
+
+@font-face{
+	font-family: 'Univers Condensed';
+	font-weight: bold;
+	font-style: none;
+	src: url('Univers-CondensedBold.otf');
+}
+
+@font-face{
+	font-family: 'Univers Condensed';
+	font-weight: normal;
+	font-style: none;
+	src: url('Univers-Condensed.otf');
+}
+
+@font-face{
+	font-family: 'Univers Condensed';
+	font-weight: 100;
+	font-style: none;
+	src: url('Univers-CondensedLight.otf');
+}
+
+/*Univers Extended*/
+
+@font-face{
+	font-family: 'Univers Extended';
+	font-weight: bold;
+	font-style: none;
+	src: url('UniversExtendedBQ-Bold.otf');
+}
+
+@font-face{
+	font-family: 'Univers Extended';
+	font-weight: normal;
+	font-style: none;
+	src: url('Univers-Extended.otf');
+}
