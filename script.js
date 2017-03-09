@@ -34,7 +34,7 @@ function currentContainer(object){
 		loop: false,
 		autoplay: false,
 		renderer: 'svg',
-		path: 'assets/WONG.json',
+		path: 'WONG.json',
 		rendererSettings: {
 
    		scaleMode: 'noScale',
