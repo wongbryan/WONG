@@ -23,7 +23,9 @@ function currentContainer(object){
 	this.current = object;
 	this.transitionTo = function(box){ //string
 		var to = document.getElementById(box);
-		this.current.style.opacity = 0;
+		let cur = this.current; 
+		cur.style.opacity = 0;
+		setTimeout(function(){console.log("changing display"); cur.style.display="none"; to.style.display = "block";}, 250);
 		to.style.opacity = 1;
 		this.current = to;
 	}
@@ -52,13 +54,11 @@ function currentContainer(object){
 		document.body.style.overflowX = "hidden";
 		document.body.removeChild(cont);
 		document.body.removeChild(counter);
-		console.log(complete);
 	}
 
 	animation.addEventListener('complete', completeAnim);
 
 	function remove(){
-		console.log('done');
 		var child = document.getElementById('container');
 		document.body.removeChild(child);
 
@@ -70,7 +70,6 @@ function currentContainer(object){
 	var complete = false;
 
 	function play(){
-		console.log(timer);
 		if (timer>30 && mousedown != 0){
 			clearInterval(interval);
 			document.getElementById('counter').style.opacity = 0;
@@ -88,7 +87,6 @@ function currentContainer(object){
 	}
 
 	function mouseUp(){
-		console.log(timer);
 		animation.stop();
 		clearInterval(interval);
 		if (timer > 30 && complete == true){
@@ -140,7 +138,6 @@ function currentContainer(object){
 			for (var i=0; i<this.bars.length; i++){
 				this.bars[i].style.marginBottom = -17.5 + "px";
 			}
-			console.log("its closed");
 			this.open = false;
 			this.callable = true;
 		}
@@ -149,7 +146,6 @@ function currentContainer(object){
 			for (var i=0; i<this.bars.length; i++){
 			this.textNodes[i].style.display = "inline";
 			}
-			console.log("its open");
 			this.open = true;
 			this.callable = true;
 		}

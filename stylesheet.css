@@ -6,6 +6,7 @@
 	position: fixed;
 	top: 0;
 	left: 0;
+	cursor: pointer;
 	}
 
 	#counter{
@@ -135,8 +136,8 @@
 .coming{
 	font-family: Aktiv Grotesk Bold;
 	font-size: 2em;
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
-	top: 100px;
+	position: fixed;
+	left: 50vw;
+	transform: translate(-50%, -50%);
+	top: 50vh;
 }
