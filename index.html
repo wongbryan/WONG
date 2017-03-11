@@ -8,6 +8,9 @@
 </head>
 <script src="scripts/bodymovin.js"></script>
 <body style="margin: 0; overflow: hidden;">
+<div id="loading">
+	<img src="assets/images/loading.gif"/>
+</div>
 <div class="flag">WONG</div>
 <div id="nav" class="group">
 		<div class="bar">
@@ -38,6 +41,11 @@
 	<div class="item">
 		<img style="transform: translate(0px, -200px);" src="assets/images/POWER2.png"/>
 	</div>
+	<header>Creative Labs Branding</header>
+	<p>
+		Creative Labs is a design club that offers a platform for creatives to learn, share and create. I designed a short booklet for them to establish their brand and mission, along with a few sample posters to use for advertising events.
+		Link to gallery <a href="https://www.behance.net/gallery/49719117/Creative-Labs-Branding-Booklet">here</a>.
+	</p>
 	<div class="item">
 		<img style="transform: translate(-175px, -250px);" src="assets/images/0.png"/>
 	</div>
@@ -62,6 +70,11 @@
 	<div class="item">
 		<img style="transform: translate(0px, -100px);" src="assets/images/FLYER MOCKS.png"/>
 	</div>
+	<header>The Hoofprint</header>
+	<p>
+		The Hoofprint is a news magazine based in Walnut, California. I spent two years as an editor and one year as Editor-in-Chief. During my last year, I directed the paper's visual identity and designed the longform pages/covers shown below. Link to other issues 
+		<a href="https://issuu.com/whshoofprint">here</a>.
+	</p>
 	<div class="item">
 		<img style="transform: translate(0px, -300px);" src="assets/images/JUSTIN BOWLER COVER.png"/>
 	</div>
@@ -96,7 +109,11 @@
 <div id="container"></div>
 <div id="counter">PRESS AND HOLD TO CONTINUE</div>
 </body>
-<script src="script.js">
-
+<script src="script.js"></script>
+<script>
+	window.addEventListener('load', function(){
+		var loading = document.getElementById("loading");
+		document.body.removeChild(loading);
+	}, false);
 </script>
 </html>
