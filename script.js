@@ -25,7 +25,7 @@ function currentContainer(object){
 		var to = document.getElementById(box);
 		let cur = this.current; 
 		cur.style.opacity = 0;
-		setTimeout(function(){console.log("changing display"); cur.style.display="none"; to.style.display = "block";}, 250);
+		setTimeout(function(){cur.style.display="none"; to.style.display = "block";}, 250);
 		to.style.opacity = 1;
 		this.current = to;
 	}
