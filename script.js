@@ -17,7 +17,7 @@ links[3].addEventListener('click', function(){
 	current.transitionTo("photoBox");
 });
 
-var current = new currentContainer(document.getElementById('printBox'));
+var current = new currentContainer(document.getElementById('webBox'));
 
 function currentContainer(object){
 	this.current = object;
