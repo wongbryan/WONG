@@ -50,13 +50,16 @@ function currentContainer(object){
 		document.body.removeEventListener('mouseup', mouseUp);
 		var cont = document.getElementById('container');
 		var counter = document.getElementById('counter');
+		var skip = document.getElementById('skip');
 		document.body.style.overflowY = "scroll";
 		document.body.style.overflowX = "hidden";
 		document.body.removeChild(cont);
 		document.body.removeChild(counter);
+		document.body.removeChild(skip);
 	}
 
 	animation.addEventListener('complete', completeAnim);
+	document.getElementById('skip').addEventListener('click', completeAnim);
 
 	function remove(){
 		var child = document.getElementById('container');
