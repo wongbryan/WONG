@@ -2,6 +2,19 @@ body {
   margin: 0;
   overflow-x: hidden; }
 
+#loading {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: white; }
+  #loading div {
+    font-family: press_gothicregular;
+    font-size: 3em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); }
+
 ul {
   list-style: none; }
 
