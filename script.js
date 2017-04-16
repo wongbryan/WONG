@@ -40,9 +40,8 @@ function checkNavBar(){
 	}
 }
 
-document.body.addEventListener('load', function(){
+
 	fixed.style.transform = "translate(-" + 50 + "%, " + -50 + "%) scaleY(" + 1 + ")";
-})
 window.addEventListener('scroll', checkNavBar);
 
 function defineWindow(){
