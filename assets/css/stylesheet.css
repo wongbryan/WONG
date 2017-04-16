@@ -6,7 +6,8 @@ body {
   position: fixed;
   width: 100vw;
   height: 100vh;
-  background-color: white; }
+  background-color: white;
+  z-index: 42069; }
   #loading div {
     font-family: press_gothicregular;
     font-size: 3em;
