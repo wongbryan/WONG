@@ -1,25 +1,6 @@
 body {
   margin: 0;
-  overflow-x: hidden; 
-  overflow-y: hidden;
-}
-
-#loading{
-  background-color: white;
-  height: 100vh;
-  width: 100vw;
-  z-index: 42069;
-  position: fixed;
-}
-
-#loading div{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: press_gothicregular;
-  font-size: 3em;
-}
+  overflow-x: hidden; }
 
 ul {
   list-style: none; }
@@ -256,5 +237,10 @@ a:link, a:active, a:visited {
 .right .dominant {
   float: right;
   margin-right: 0; }
+
+.makeItem {
+  margin-bottom: 0; }
+  .makeItem img {
+    width: 100vw; }
 
 /*# sourceMappingURL=stylesheet.css.map */
