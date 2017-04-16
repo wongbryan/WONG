@@ -296,6 +296,12 @@ a:link, a:active, a:visited{
 		font-family: dincond-boldregular;
 		font-size: 1em;
 		color: black;
+		transition: color .25s;
+		margin-bottom: .5em;
+		display: block;
+	}
+	a:hover{
+		color: red;
 	}
 }
 
