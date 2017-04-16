@@ -41,7 +41,9 @@ function checkNavBar(){
 }
 
 window.addEventListener('load', function(){
-	fixed.style.transform = "translate(-" + 50 + "%, " + -50 + "%) scaleY(" + 1 + ")";
+
+	setTimeout(function(){fixed.style.transform = "translate(-" + 50 + "%, " + -50 + "%) scaleY(" + 1 + ")";}, 200);
+	document.body.style.overflowY = "scroll";
 })
 window.addEventListener('scroll', checkNavBar);
 
