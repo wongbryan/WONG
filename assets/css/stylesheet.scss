@@ -1,0 +1,309 @@
+body{
+	margin: 0;
+	overflow-x: hidden;
+}
+
+ul{
+	list-style: none;
+}
+
+p{
+	font-family: din_alternate_lightregular;
+	font-size: 1em;
+	color: gray;
+}
+
+a:link, a:active, a:visited{
+	text-decoration: none;
+	color: black;
+}
+
+//fixed elements
+
+#fixed{
+	border-right: solid black 1px;
+	border-bottom: solid black 1px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) scaleY(0);
+	transition: all .5s ease;
+}
+
+#main{
+	width: 100%;
+	position: absolute;
+	perspective: 800px;
+}
+
+.info{
+	transform-style: preserve-3d;
+	font-family: dincond-boldregular;
+	padding-left: 5px;
+	background-color: black;
+	height: 3.25em;
+	width: 5em;
+	color: white;
+	font-size: 1.25em;
+	margin: 0;
+	transition: all .25s;
+}
+
+.info:hover{
+	transform: rotateY(180deg);
+}
+
+.info{
+	div:first-child{
+		margin: 5px;
+		position: absolute;
+	}
+	div:nth-child(2){
+		background-color: black;
+		top: 0;
+		position: absolute;
+		height: inherit;
+		width: inherit;
+		transform: rotateY(180deg);
+		backface-visibility: hidden;
+		-webkit-backface-visibility: hidden;
+	}
+	a{
+		display: block;
+		margin-left: 5px;
+		margin-top: 5px;
+		font-size: .75em;
+		font-family: dincondensedcregular;
+		color: white;
+	}
+}
+
+.options{
+	font-family: dincondensedcregular;
+	font-size: 1.25em;
+	padding: 0;
+	position: absolute;
+	top: 0%;
+	right: -1%;
+	margin: 0;
+
+	li:first-child{
+	}
+}
+
+.options{
+	li{
+		div{
+			background-color: black;
+			height: 30px; 
+			width: 30px;
+			color: white;
+			a{
+			font-family: press_gothicregular;
+			vertical-align: middle;
+			margin-left: 11px;
+			margin-top: 2px;
+			}
+		}
+		a{
+			color: black;
+			padding-left: 2px;
+		}
+		a:before{
+			content: "";
+			z-index: -1;
+			position: absolute;
+			height: 1em;
+			display: block;
+			background-color: #e5e5e5;
+			transform-origin: center;
+			transition: all .15s ease;
+			transform: scaleX(0);
+		}
+		a:hover:before{
+			transform: scaleX(1);
+		}
+	}
+	li:first-child{
+		 a:before{
+		 	display: none;
+		 }
+		 a{
+		 	color: white;
+		 }
+	}
+	li:nth-child(2) a:before{
+		width: 47px;
+	}
+	li:nth-child(3) a:before{
+		width: 64px;
+	}
+	li:nth-child(4) a:before{
+		width: 33px;
+	}
+}
+
+.options li{
+	float: right;
+	margin-left: 5em;
+}
+
+.m{
+	font-family: press_gothicregular;
+	border-top: 5px solid black;
+	font-size: 1.5em;
+	position: absolute;
+	top: 50%; left: 0%;
+	transform: translateY(-50%);
+	transition: all .75s ease;
+	a{
+		color: black;
+		transition: color .75s ease;
+	}
+	a:hover{
+		color: red;
+	}
+}
+
+.m:hover{
+	color: red;
+	border-top: 5px solid red;
+}
+
+.toggleFrame{
+	font-family: dincond-boldregular;
+	font-size: 1em;
+	position: fixed;
+	bottom: 0; left: 0;
+}
+
+.toggleFrame:before{
+	content: "";
+	z-index: -1;
+	position: absolute;
+	height: 1em;
+	display: block;	
+	background-color: #e5e5e5;
+	transform-origin: center;
+	transition: all .15s ease;
+	transform: scaleX(0);
+	width: 5em;
+}
+
+.toggleFrame:hover{
+	cursor: pointer;
+}
+
+.toggleFrame:hover:before{
+	transform: scaleX(1);
+}
+
+//content
+
+.content{
+	width: 100vw;
+	.first{
+		height: 100vh;
+		width: 100vw;
+		margin-bottom: 0;
+		.landingImage{
+			width: 100%;
+			height: 100%;
+			overflow:hidden;
+			img{
+				width: 100%;
+			}
+		}
+	}
+}
+
+.title{
+	font-family: press_gothicregular;
+	font-size: 12em;
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.project{
+	height: 100vh;
+	width: 100%;
+	margin: 0;
+	.item{
+		float: left;
+	}
+	img{
+		width: 100%;
+	}
+	.dominant{
+		height: 100%;
+		width: 60%;
+		overflow: hidden;
+		margin-right: 3em;
+	}
+	.package{
+		width: 50%;
+		height: 100%;
+		overflow: hidden;
+		margin: 0;
+	}
+}
+
+.right{
+	.dominant{
+		margin-right: 0;
+	}
+}
+
+.description{
+	margin-top: 10%;
+	width: 30%;
+	z-index: 2000;
+	position: relative;
+	.bar{
+		background-color: black;
+		height: 2em;
+		width: 5em;
+		margin-bottom: 10px;
+	}
+	header{
+		font-family: press_gothicregular;
+		font-size: 4em;
+		line-height: 65px;
+		margin-bottom: 1em;
+	}
+	p{
+		margin-bottom: 3em;
+	}
+	a{
+		font-family: dincond-boldregular;
+		font-size: 1em;
+		color: black;
+	}
+}
+
+.right{
+	.bar{
+		float:right;
+	}
+	header{
+		float: right;
+	}
+	p{
+		float: right;
+	}
+	a{
+		float: right;
+	}
+	.description{
+		float: right;
+		margin-left: 0;
+		margin-right: 3em;
+		text-align: right;
+	}
+	.dominant{
+		float: right;
+		margin-right: 0;
+	}
+}

@@ -1,78 +1,93 @@
+var fixed = document.getElementById('fixed');
+function getScrollbarWidth() {
+    var outer = document.createElement("div");
+    outer.style.visibility = "hidden";
+    outer.style.width = "100px";
+    outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
 
+    document.body.appendChild(outer);
 
-	var animation = bodymovin.loadAnimation({
-		container: document.getElementById('container'),
-		loop: false,
-		autoplay: false,
-		renderer: 'svg',
-		path: 'WONG.json',
-		rendererSettings: {
+    var widthNoScroll = outer.offsetWidth;
+    // force scrollbars
+    outer.style.overflow = "scroll";
 
-   		scaleMode: 'noScale',
-    	clearCanvas: false
- 		}
-	});
+    // add innerdiv
+    var inner = document.createElement("div");
+    inner.style.width = "100%";
+    outer.appendChild(inner);        
 
-	function completeAnim(){
-		complete = false;
-		document.body.removeEventListener('mousedown', mouseDown);
-		document.body.removeEventListener('mouseup', mouseUp);
-		var cont = document.getElementById('container');
-		var counter = document.getElementById('counter');
-		var skip = document.getElementById('skip');
-		document.body.style.overflowY = "scroll";
-		document.body.style.overflowX = "hidden";
-		document.body.removeChild(cont);
-		document.body.removeChild(counter);
-		document.body.removeChild(skip);
+    var widthWithScroll = inner.offsetWidth;
+
+    // remove divs
+    outer.parentNode.removeChild(outer);
+
+    return widthNoScroll - widthWithScroll;
+}
+
+var scrollBarWidth = getScrollbarWidth();
+
+function checkNavBar(){
+	var scrollTop = Number(document.body.scrollTop);
+	var scrollTotal = Number(document.body.scrollHeight)-Number(window.innerHeight);
+	
+	if(scrollTop > scrollTotal-75 || scrollTop < 75){
+		fixed.style.transform = "translate(-" + 50 + "%, " + -50 + "%) scaleY(" + 1 + ")";
+	}
+	else{
+		if (frameOn)
+			return;
+		fixed.style.transform = "translate(-" + 50 + "%, " + -50 + "%) scaleY(" + 0 + ")";
+	}
+}
+
+window.addEventListener('load', function(){
+	fixed.style.transform = "translate(-" + 50 + "%, " + -50 + "%) scaleY(" + 1 + ")";
+})
+window.addEventListener('scroll', checkNavBar);
+
+function defineWindow(){
+
+	var content = document.getElementsByClassName('content')[0];
+	var projects = document.getElementsByClassName('project');
+
+	var height = window.innerHeight; 
+	var width = window.innerWidth - scrollBarWidth;
+
+	for (var i=0; i<projects.length; i++){
+		projects[i].style.width = width;
+		projects[i].style.height = height;
 	}
 
-	animation.addEventListener('complete', completeAnim);
-	document.getElementById('skip').addEventListener('click', completeAnim);
+	content.style.width = width + "px";
 
-	function remove(){
-		var child = document.getElementById('container');
-		document.body.removeChild(child);
+	height = height-(.06*width);
+	width = width-(.06*width);
 
+	fixed.style.height = height + "px";
+	fixed.style.width = width + "px";
+}
+
+defineWindow();
+
+window.addEventListener('resize', defineWindow);
+
+//toggle
+
+var frameOn = false;
+var toggle = document.getElementsByClassName('toggleFrame')[0];
+toggle.addEventListener('click', toggleFrame);
+
+function toggleFrame(){
+	if (frameOn){
+		frameOn = false;
+		fixed.style.transform = "translate(-" + 50 + "%, " + -50 + "%) scaleY(" + 0 + ")";
+		toggle.innerHTML = "ENABLE FRAME";
+		window.addEventListener('scroll', checkNavBar);
 	}
-
-	var mousedown = 0;
-	var timer = 0;
-	var interval;
-	var complete = false;
-
-	function play(){
-		if (timer>30 && mousedown != 0){
-			clearInterval(interval);
-			document.getElementById('counter').style.opacity = 0;
-			animation.stop();
-			animation.play();
-		}
-		else{
-			timer++;
-		}
+	else{
+		fixed.style.transform = "translate(-" + 50 + "%, " + -50 + "%) scaleY(" + 1 + ")";
+		frameOn = true;
+		toggle.innerHTML = "DISABLE FRAME";
+		window.removeEventListener('scroll', checkNavBar);
 	}
-
-	function mouseDown(){
-		interval = setInterval(function(){play();}, 50);
-		mousedown++;
-	}
-
-	function mouseUp(){
-		animation.stop();
-		clearInterval(interval);
-		if (timer > 30 && complete == true){
-			document.getElementById('container').style.opacity = 0;
-		}
-		else{
-			document.getElementById('counter').style.opacity = 1;
-			timer = 0;
-		}
-
-		mousedown--;
-	}
-
-	document.body.addEventListener('mousedown', mouseDown);
-
-	document.body.addEventListener('mouseup', mouseUp);
-///////
+}
