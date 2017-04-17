@@ -205,7 +205,7 @@ a:link, a:active, a:visited {
   .project .item {
     float: left; }
   .project img {
-    width: 100%; }
+    height: inherit; }
   .project .dominant {
     height: 100%;
     width: 60%;
