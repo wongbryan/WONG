@@ -257,13 +257,15 @@ a:link, a:active, a:visited{
 		float: left;
 	}
 	img{
-		width: 100%;
+		max-width: 60vw;
 	}
 	.dominant{
-		height: 100%;
-		width: 60%;
 		overflow: hidden;
 		margin-right: 3em;
+	}
+	.blackBox{
+		height: 100%;
+		width: 60%;
 	}
 	.package{
 		width: 50%;

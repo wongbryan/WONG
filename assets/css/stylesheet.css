@@ -205,12 +205,13 @@ a:link, a:active, a:visited {
   .project .item {
     float: left; }
   .project img {
-    width: 100%; }
+    max-width: 60vw; }
   .project .dominant {
-    height: 100%;
-    width: 60%;
     overflow: hidden;
     margin-right: 3em; }
+  .project .blackBox {
+    height: 100%;
+    width: 60%; }
   .project .package {
     width: 50%;
     height: 100%;
