@@ -211,7 +211,8 @@ a:link, a:active, a:visited {
     margin-right: 3em; }
   .project .blackBox {
     height: 100%;
-    width: 60%; }
+    width: 60%;
+    background-color: black; }
   .project .package {
     width: 50%;
     height: 100%;
