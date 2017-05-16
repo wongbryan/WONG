@@ -542,6 +542,9 @@ class IceCrystal extends Atom{ //construct them with radius 1
 	}
 
 	update(){
+		this.mesh.rotation.y += Math.PI/2/300;
+		this.mesh.rotation.x += Math.PI/2/300;
+		this.mesh.rotation.z += Math.PI/2/300;
 		// if (this.mesh.geometry.arc <= 0){
 		// 	this.mesh.geometry.arc += Math.PI/2/360
 		// 	return;
