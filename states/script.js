@@ -584,7 +584,7 @@ function handleMouseMove(e){
     mouse.y = e.clientY;
 }
 
-window.addEventListener('mousemove', handleMouseMove);
+// window.addEventListener('mousemove', handleMouseMove);
 
 //render
 
