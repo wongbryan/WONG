@@ -5,30 +5,90 @@ const COLORS = {
 	Red: 0xff0000,
 	White: 0xffffff,
 	Gray: 0xe1e1e1,
-	DarkBlue: 0x070a19
+	DarkBlue: 0x070a19,
+	iron: 0x6b6e72,
+	electron: 0xffffff
 };
 
 var HEIGHT = window.innerHeight;
 var WIDTH = window.innerWidth;
 const ORIGIN = new THREE.Vector3(0, 0, 0);
+const SCENES = ['title', 'ice', 'metal', 'water', 'iron', 'mdma', 'salt'];
 
 //global variables for testing
-var meth = []; var temp; var temp2; var neg = -1; var fog; var gasherbrum; var torusRing; var iceCrystal; var iceLayer; var iceLayer2; var background;
+var test;
+var customUniforms;
+var iceTube;
+var meth = []; var temp; var temp2; var temp3; var neg = -1; var fog; var gasherbrum; var torusRing; var metalNode; var metalLayer; var metalLayer2; var background;
 var reflectiveMaterial;
+var canPopulate = true; //use this to control intervals between adding molecules
+var domeRadius = 50;
+var birthRadius = domeRadius/10;
+var TITLE;
+var titleGlobe;
+var globalWaterSphere;
+var birthRadiusWater = 20;
+var lattice;
+var MDMAMol;
 
 //auxillary functions
-function loop(){
-	World.update(); //update positions of all objects in scene
+var loop = function(){
+	World.updateTitle(); //update positions of all objects in scene
 	World.collectTrash();
 	// World.camera.position.z -= 1.5;
 	World.renderer.render(World.scene, World.camera);
 	window.requestAnimationFrame(loop);
 }
 
+function addIce(){
+	var angle, posX, posY;
+	angle = Math.random() *2*Math.PI;
+	posX = Math.random()*birthRadius*Math.cos(angle);
+	posY = Math.random()*birthRadius*Math.sin(angle);
+	temp2 = new Ice(1, angle, -1, posX, posY, 997);
+
+	World.scene.add(temp2.mesh);
+	World.objects.push(temp2);
+}
+
+
+var spawnWater = function(e){
+	var x, y, z;
+	z = 900;
+	var vector = new THREE.Vector3();
+
+	vector.set(
+	    ( e.clientX / window.innerWidth ) * 2 - 1,
+	    - ( e.clientY / window.innerHeight ) * 2 + 1,
+	    0.5 );
+
+	vector.unproject( World.camera );
+
+	var dir = vector.sub( World.camera.position ).normalize();
+
+	var distance = (z - World.camera.position.z) / dir.z;
+
+	var pos = World.camera.position.clone().add( dir.multiplyScalar( distance ) );
+
+	x = pos.x; y = pos.y;
+	var size = 1 + Math.random()*5;
+
+	temp = new Water(size, Math.random()*2*Math.PI, 1.2, x, y, z);
+	World.scene.add(temp.mesh);
+	World.objects.push(temp);
+}
+
+function distortWaterBackground(){
+	globalWaterSphere.distort();
+}
+
+function distortTitleBackground(){
+	titleGlobe.distort();
+}
+
 var requestId;
 function collapseWorld(){
 	if(World.collapse()){
-		console.log("completed");
 		window.cancelAnimationFrame(requestId);
 		return;
 	}
@@ -45,7 +105,7 @@ function float(){
 
 class WORLD{
 	constructor(){ //initialize scene
-		var scene, camera, cubeCamera, aspectRatio, near, far, fieldOfView, renderer;
+		var scene, camera, cubeCamera, iceCubeCamera, aspectRatio, near, far, fieldOfView, renderer; //cube camera isn't necessary, but use it to test 
 
 		scene = new THREE.Scene();
 		scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
@@ -59,8 +119,14 @@ class WORLD{
 
 		cubeCamera = new THREE.CubeCamera(near, far, 256); //by default, set cubeCamera in same position as regular camera w/ same near/far
 		cubeCamera.renderTarget.minFilter = THREE.LinearMipMapLinearFilter;
-		cubeCamera.position.set(0, 0, 900);
+		cubeCamera.position.set(0, 0, 1000);
 		scene.add(cubeCamera);
+
+		iceCubeCamera = new THREE.CubeCamera(near, far, 256);
+		iceCubeCamera.renderTarget.minFilter = THREE.LinearMipMapLinearFilter;
+		iceCubeCamera.position.set(0, 0, 980);
+
+		scene.add(iceCubeCamera);
 
 		renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
 		renderer.setClearColor(COLORS.DarkBlue);
@@ -70,10 +136,17 @@ class WORLD{
 		this.objects = [];
 		this.zPositions = [];
 		this.lights = [];
+		this.electrons = [];
+		this.layers = [];
+		this.titleIcons = [];
+		this.titleIconObjects = [];
 		this.scene = scene;
 		this.camera = camera;
 		this.cubeCamera = cubeCamera;
+		this.iceCubeCamera = iceCubeCamera;
 		this.renderer = renderer;
+		this.canPopulate = true;
+		this.curScene;
 		return this;
 	}
 
@@ -82,42 +155,333 @@ class WORLD{
 		directionalLight.position.set(0, 0, 1).normalize();
 		var ambientLight = new THREE.AmbientLight();
 		ambientLight.position.set(0, 0, 950);
-		var hemLight = new THREE.HemisphereLight(COLORS.Blue, COLORS.LightBlue);
-		// scene.add(hemLight);
+		// var hemLight = new THREE.HemisphereLight(0xaaaaaa,0x000000, 1);
+		// this.scene.add(hemLight);
 		this.scene.add(directionalLight);
 		// this.scene.add(ambientLight);
 		// this.lights.push(ambientLight);
 		this.lights.push(directionalLight);
 	}
 
-	populate(){
-
-		var tubes = [];
-
-		for (var i=0; i<1; i++){
-			tubes.push(new IceTube(0, 0, 800, i*Math.PI/2, 3));
-			this.scene.add(tubes[i].mesh);
-			this.objects.push(tubes[i]);
+	changeScene(scene){
+		this.clearScene();
+		this.removeEventListeners();
+		if (scene == 'ice'){
+			this.populateIce();
+			loop = function(){
+				World.updateIce();
+				World.collectTrash();
+				World.renderer.render(World.scene, World.camera);
+				window.requestAnimationFrame(loop);
+			}
 		}
-
-		// torusRing = new TorusRing(50, 50, 0, 899);
-		// this.scene.add(torusRing.mesh);
-		// this.objects.push(torusRing);
-
-		// iceCrystal = new IceCrystal(1, 0, 0, 950);
-		// this.scene.add(iceCrystal.mesh);
-		// this.objects.push(iceCrystal);
-
-		// iceLayer = new IceLayer(50, 0, 0, 700, 1, 4);
-		// this.scene.add(iceLayer.mesh);
-		// this.objects.push(iceLayer);
-
-		// iceLayer2 = new IceLayer(100, 0, 0, 800, 0, 8);
-		// this.scene.add(iceLayer2.mesh);
-		// this.objects.push(iceLayer2);
+		else if (scene == 'water'){
+			this.populateWater();
+			loop = function(){
+				World.updateWater();
+				World.collectTrash();
+				World.renderer.render(World.scene, World.camera);
+				window.requestAnimationFrame(loop);
+			}
+		}
+		else if (scene == 'iron'){
+			this.populateIron();
+			World.scene.fog = new THREE.Fog(0x1e1d1b, 100, -1000);
+			loop = function(){
+				World.updateIron();
+				World.collectTrash();
+				World.renderer.render(World.scene, World.camera);
+				window.requestAnimationFrame(loop);
+			}
+		}
+		else if (scene == 'metal'){
+			this.populateMetal();
+			loop = function(){
+				World.updateMetal();
+				World.collectTrash();
+				World.renderer.render(World.scene, World.camera);
+				window.requestAnimationFrame(loop);
+			}
+		}
+		else if (scene == 'title'){
+			this.populateTitle();
+			loop = function(){
+				World.updateTitle();
+				World.collectTrash();
+				World.renderer.render(World.scene, World.camera);
+				window.requestAnimationFrame(loop);
+			}
+		}
+		else if (scene == 'mdma'){
+			this.populateMDMA();
+			loop = function(){
+				World.updateMDMA();
+				World.collectTrash();
+				World.renderer.render(World.scene, World.camera);
+				window.requestAnimationFrame(loop);
+			}
+		}
+		else if (scene == 'salt'){
+			this.populateSalt();
+			loop = function(){
+				World.updateSalt();
+				World.collectTrash();
+				World.renderer.render(World.scene, World.camera);
+				window.requestAnimationFrame(loop);
+			}
+		}
 	}
 
-	update(){
+	populateMDMA(){
+		MDMAMol = new MDMALattice(4, 0, 0, 950);
+		this.scene.add(MDMAMol.mesh);
+		this.objects.push(MDMAMol);
+		var background = new MDMABackground(0, 0, 980);
+		this.scene.add(background.mesh);
+		this.objects.push(background);
+	}
+
+	populateMetal(){
+		var ionSize = 16;
+	    var dis = 15*ionSize/1.3;
+	    ionSize *= 1.5;
+
+	    var i, j, k;
+	    var x, y, z;
+	    var m;
+	    var n = 4;
+	    var numKLayers = (n*2)-3;
+
+	    var egeo = new THREE.SphereGeometry(ionSize/15, 10, 10);
+	    var emat = new THREE.MeshPhongMaterial({
+	      shininess: 25,
+	      specular: 0xffffff,
+	      emissive: COLORS.Ice,
+	      color: COLORS.Blue
+	    });
+
+	    i=j=0;
+	    for (var k=0; k<5; k++){
+	      this.electrons[k] = new THREE.Group();
+	      for(j=-5; j<5; j++){
+	        for(i=-5; i<5; i++){
+	            var electron = new THREE.Mesh(egeo, emat);
+	            electron.position.x = i*dis + (Math.random()*dis);
+	            electron.position.y = j*dis + (Math.random()*dis);
+	            electron.position.z = 0;
+	            this.electrons[k].add(electron);
+	        }
+	      }
+	      this.electrons[k].position.z -= k*dis;
+	      this.scene.add(this.electrons[k]);
+	    }
+	}
+	
+	populateIron(){
+		this.scene.fog = new THREE.Fog(0x1e1d1b, 100, 800);
+
+		var n = 4;
+		lattice = new Lattice(n);
+		lattice.mesh.position.set(-window.innerWidth/4, window.innerHeight/2, 950);
+		this.scene.add(lattice.mesh);
+		this.objects.push(lattice);
+	}
+
+	populateTitle(){
+		var loader;
+	    var _this = this;
+	    var icons = [];
+	    loader = new THREE.FontLoader();
+	    loader.load('/assets/ultra.json', function(font){
+	      var geometry, mat, mesh;
+	      geometry = new THREE.TextGeometry('STATES', {
+	        font: font,
+	        size: 1,
+	        height: .1,
+	        curveSegments:12,
+	        bevelThickness: 0,
+	        bevelSize: .005,
+	        bevelEnabled: false
+	      });
+
+	      THREE.GeometryUtils.center( geometry ).
+
+	      mat = new THREE.MeshBasicMaterial({
+	        color: 0xff0000
+	      });
+
+	      mesh = new THREE.Mesh(geometry, mat);
+	      mesh.position.set(0, 0, 995);
+	      TITLE = new Title(mesh, 0, 0, 995);
+	      TITLE.mapToCube(_this.cubeCamera);
+	      TITLE.mesh.material.color = new THREE.Color(COLORS.Ice);
+	      _this.scene.add(mesh);
+	      _this.objects.push(TITLE);
+	    });
+
+	    titleGlobe = new TitleGlobe(25, 0, 0, 980);
+	    this.scene.add(titleGlobe.mesh);
+	    this.objects.push(titleGlobe);
+
+	    var iron = new Iron(.17, -2, -1.25, 995);
+	    this.scene.add(iron.mesh);
+	    this.objects.push(iron);
+	    icons.push(iron.mesh);
+	    this.titleIconObjects.push(iron);
+
+	    var ice = new CubicIce(.25, Math.PI*2, -1, -1.25, 995);
+	    ice.update = function(){
+	    	this.mesh.rotation.z += this.speed*.05;
+   			this.mesh.rotation.y += this.speed*.05;
+	    }
+	    this.scene.add(ice.mesh);
+	    this.objects.push(ice);
+	    icons.push(ice.mesh);
+	    this.titleIconObjects.push(ice);
+
+	    var metalNode = new TitleMetalNode(.17, 0, -1.25, 995);
+	    this.scene.add(metalNode.mesh);
+	    this.objects.push(metalNode);
+	    metalNode.mapToCube(this.cubeCamera);
+	    icons.push(metalNode.mesh);
+	    this.titleIconObjects.push(metalNode);
+
+	    var water = new Water(.3, Math.random()*2*Math.PI, 0, 1, -1.25, 995);
+	    this.scene.add(water.mesh);
+	    this.objects.push(water);	
+	    icons.push(water.mesh);
+	    this.titleIconObjects.push(water);
+
+	    var smiley = new Smiley(.15, 2, -1.25, 995);
+	    this.scene.add(smiley.mesh);
+	    this.objects.push(smiley);	
+	    icons.push(smiley.mesh);
+	    this.titleIconObjects.push(smiley);
+
+	    this.titleIcons = icons;
+
+	    window.addEventListener('mousedown', selectScene);
+	}
+
+	populateWater(){
+		globalWaterSphere = new GlobalWaterSphere(50, 0, 0, 950);
+	    globalWaterSphere.mapToCube(this.cubeCamera);
+	    this.scene.add(globalWaterSphere.mesh);
+	    this.objects.push(globalWaterSphere);
+	    
+	    var x, y, z;
+	    x = Math.random()*WIDTH/2;
+	    y = Math.random()*HEIGHT/2;
+	    temp2 = new Water(5, Math.PI*2*Math.random(), 1, x, y, 980);
+	    this.scene.add(temp2.mesh);
+	    this.objects.push(temp2);
+	    window.addEventListener('mousedown', distortWaterBackground);
+	    window.addEventListener('mousedown', spawnWater);
+	}
+
+	populateIce(){
+		temp = new IceDome(domeRadius, 500, 0, 0, 1000);
+		temp.mapToCube(this.iceCubeCamera);
+		this.objects.push(temp);
+		this.scene.add(temp.mesh);
+		window.addEventListener('mousedown', addIce);
+	}
+
+	togglePopulate(){
+		if (this.canPopulate)
+			this.canPopulate = false;
+		else
+			this.canPopulate = true;
+	}
+
+	addMolecule(molecule){
+		this.objects.push(molecule);
+		this.scene.add(molecule.mesh);
+	}
+
+	updateMDMA(){
+		for(var i=0; i<this.objects.length; i++){
+			this.objects[i].update();
+		}
+	}
+
+	updateMetal(){
+		if(this.objects.length < 3) {
+	      this.fillScene(new IceTube(0, 0, 0, 0, 1));
+	    }
+
+	    for (var i=0; i<this.objects.length; i++){
+	      this.objects[i].update();
+	    }
+
+	    // core.material.uniforms.time.value += .005;
+	    // core.rotation.y += .003;
+
+	    var speed = 5;
+	    for (var i = 0; i < this.electrons.length; i++) {
+	      if (this.electrons[i].position.z >= 1000){
+	        this.electrons[i].position.z = 0;
+	      }
+	      this.electrons[i].position.z += speed*5;
+	    }
+	  }
+
+	fillScene(molecule){
+	  this.scene.add(molecule.mesh);
+	  this.objects.push(molecule);
+	}
+
+	updateIron(){
+		for(var i=0; i<this.objects.length; i++){
+	      this.objects[i].update();
+	    }
+	}
+
+	updateTitle(){
+		for(var i=0; i<this.objects.length; i++){
+	      this.objects[i].update();
+	    }
+	}
+
+	updateWater(){
+		for(var i=0; i<this.objects.length; i++){
+	      this.objects[i].update();
+	    }
+	    if (this.objects.length<25 && this.canPopulate){
+	      var angle, posX, posY;
+	      angle = Math.random() *2*Math.PI;
+	      posX = Math.random()*birthRadiusWater*Math.cos(angle);
+	      posY = Math.random()*birthRadiusWater*Math.sin(angle);
+	      temp2 = new Water(1 + Math.random()*5, angle, 1, posX, posY, 900);
+	      this.objects.push(temp2);
+	      this.scene.add(temp2.mesh);
+	      this.canPopulate = false;
+	      var _this = this;
+	      setTimeout(function(){
+	        _this.togglePopulate();
+	      }, 900);
+	    }
+	}
+
+	updateIce(){
+		if (this.objects.length<25 && this.canPopulate){
+			var angle, posX, posY;
+			angle = Math.random() *2*Math.PI;
+			posX = Math.random()*birthRadius*Math.cos(angle);
+			posY = Math.random()*birthRadius*Math.sin(angle);
+			temp2 = new Ice(1, angle, -1, posX, posY, 1000);
+			this.objects.push(temp2);
+			this.scene.add(temp2.mesh);
+			this.canPopulate = false;
+			var _this = this;
+			setTimeout(function(){
+				_this.togglePopulate();
+			}, 900);
+		}
+
+		temp.mesh.rotation.y += .005;
+		// test.material.uniforms.time.value += .005;
+		// test.rotation.y += .003;
 		for (var i=0; i<this.objects.length; i++){
 			this.objects[i].update();
 		}
@@ -125,7 +489,7 @@ class WORLD{
 
 	collectTrash(){
 		for (var i=0; i<this.objects.length; i++){ //if past camera, remove from scene and delete from array
-			if (this.objects[i].pastCamera()){
+			if (this.objects[i].pastCamera() || this.objects[i].outOfRange()){
 				this.scene.remove(this.objects[i].mesh);
 				this.objects.splice(i, 1);
 			}
@@ -166,605 +530,12 @@ class WORLD{
 		}
 		this.objects = []; //clear objects array
 	}
-}
 
-//BASE CLASSES
-
-class Item{
-	constructor(mesh, x, y, z){
-		this.mesh = mesh;
-	}
-	rotate(x, y, z){ 
-		this.mesh.rotation.x += x;
-		this.mesh.rotation.y += y;
-		this.mesh.rotation.z += z;
-	}
-	translate(x, y, z){ //moves one unit towards a point in space
-		this.mesh.position.x += x;
-		this.mesh.position.y += y;
-		this.mesh.position.z += z;
-	}
-
-	moveToward(x, y, z, magnitude){
-		if (x == Math.floor(Math.abs(this.mesh.position.x)/magnitude) && y == Math.floor(Math.abs(this.mesh.position.y)/magnitude) && z == Math.floor(Math.abs(this.mesh.position.z)/magnitude)){
-			// console.log(this.mesh.position);
-			return true;
-		} //if at the position already
-
-		var amtX, amtY, amtZ;
-		amtX = x-this.mesh.position.x;
-
-		amtX = amtX/Math.abs(amtX);
-
-		amtX *= magnitude;
-
-
-		amtY = y-this.mesh.position.y;
-		amtY = amtY/Math.abs(amtY);
-		amtY *= magnitude;
-
-		amtZ = z-this.mesh.position.z;
-		amtZ = amtZ/Math.abs(amtZ);
-		amtZ *= magnitude
-
-		this.translate(amtX, amtY, amtZ);
-		return false;
-	}
-
-	pastCamera(){
-		return this.mesh.position.z > World.camera.position.z;
-	}
-
-	update(){ //default update
-		return;
-	}
-}
-
-class Atom extends Item{
-	constructor(mesh, x, y, z){
-		super(mesh, x, y, z);
-	}
-}
-
-class Molecule extends Item{
-	constructor(mesh, x, y, z, atoms){
-		super(mesh, x, y, z);
-		this.atoms = atoms;
-	}
-
-	update(){
-		for (var i=0; i<this.atoms.length; i++){
-			this.atoms[i].update();
-		}
-	}
-}
-
-class iceNucleus extends Atom{
-	constructor(x, y, z){
-		var innerGeom, outerGeom, mat, glowMat, nucleus, glow, mesh;
-		innerGeom = new THREE.SphereGeometry(10, 40, 40, 0, Math.PI * 2, 0, Math.PI * 2); //constructor	
-		outerGeom = innerGeom.clone();
-		outerGeom.mergeVertices();
-
-		mat = new THREE.MeshPhongMaterial({
-			shininess: 25,
-			ambient: 0x050505,
-			specular: 0xffffff,
-			emissive: COLORS.Ice,
-			color: COLORS.Blue
-		});
-
-		for (var i=0; i<outerGeom.vertices.length; i++){
-			outerGeom.vertices[i].x += Math.cos(Math.random()*2*Math.PI) * Math.random() ;
-			outerGeom.vertices[i].x += Math.sin(Math.random()*2*Math.PI) * Math.random() ;
-		}
-
-		glowMat = new THREE.ShaderMaterial( 
-		{
-		    uniforms: 
-			{ 
-				"c":   { type: "f", value: 1.0 },
-				"p":   { type: "f", value: 1.4 },
-				glowColor: { type: "c", value: new THREE.Color(COLORS.Blue) },
-				viewVector: { type: "v3", value: World.camera.position }
-			},
-			vertexShader:   document.getElementById( 'vertexShader'   ).textContent,
-			fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
-			side: THREE.FrontSide,
-			blending: THREE.AdditiveBlending,
-			transparent: true
-	}   );
-
-		nucleus = new THREE.Mesh(innerGeom, mat);
-		nucleus.position.set(x, y, z);
-
-		glow = new THREE.Mesh(outerGeom, glowMat);
-		glow.position.set(x, y, z);
-		glow.scale.multiplyScalar(1.5);
-
-		mesh = new THREE.Group();
-		mesh.add(nucleus);
-		mesh.add(glow);
-		super(mesh, x, y, z);
-		return this;
-	}
-}
-
-class Triangle extends Atom{
-	constructor(color, thickness, x, y, z){
-		this.slices = []; //array of triangle slice meshes
-		this.mesh = new THREE.Group();
-
-		var geom, mat, triangle, mesh;
-		var spaceBetween = thickness/10;
-		var _this = this;
-		for (var i=0; i< thickness; i++){
-			geom = new THREE.RingGeometry(5, 10, 1, 1);
-
-			mat = new THREE.MeshPhongMaterial({
-				shininess: 25,
-				ambient: 0x050505,
-				specular: 0xffffff,
-				emissive: color,
-				// transparent: true,
-				// opacity: .5
-			});
-
-			triangle = new THREE.Mesh(geom, mat);
-			triangle.position.set(0, 0, i*spaceBetween);
-			_this.mesh.add(triangle);
-			_this.slices.push(triangle);
-		}
-		return this;
-	}
-}
-
-Gasherbrum = function(x, y, z){ //four intersecting triangles
-	var geom, mat, tri1, tri2, tri3, tri4, mesh;
-
-	tri1 = new Triangle(COLORS.Red, 5, 0, 0, 0);
-	tri1.mesh.rotation.z = Math.PI/2;
-
-	tri2 = new Triangle(COLORS.Blue, 5, 0, 0, 0);
-	tri2.mesh.rotation.z = Math.PI/2;
-	tri2.mesh.rotation.y += Math.PI/2;
-	tri2.mesh.rotation.z += Math.PI/3;
-
-	tri3 = new Triangle(COLORS.White, 5, 0, 0, 0);
-	tri3.mesh.rotation.z = Math.PI/2 + Math.PI/3;
-	tri3.mesh.rotation.y += Math.PI/2;
-	// tri3.mesh.rotation.y = Math.PI/3;
-	// tri3.mesh.rotation.z = Math.PI/4;
-
-	tri4 = new Triangle(COLORS.Ice, 5, 0, 0, 0);
-	tri4.mesh.rotation.y = Math.PI/2;
-
-	mesh = new THREE.Group();
-	mesh.add(tri1.mesh); 
-	mesh.add(tri2.mesh); mesh.add(tri3.mesh); mesh.add(tri4.mesh);
-	mesh.position.set(x, y, z);
-
-	this.mesh = mesh;
-	return this;
-}
-
-class Torus extends Atom{
-	constructor(radius, x, y, z){
-		var mesh = new THREE.Group();
-		var geom = new THREE.TorusGeometry( radius, 2, 5, 7);
-		var mat = new THREE.MeshPhongMaterial({
-			shininess: 25,
-			ambient: 0x050505,
-			specular: 0xffffff,
-			emissive: COLORS.Ice,
-			opacity: .8,
-			transparent: true,
-		});
-
-		var torus = new THREE.Mesh(geom, mat);
-		torus.position.set(0, 0, 0);
-		mesh.add(torus);
-
-		var outerGeom = new THREE.SphereGeometry(20, 40, 40); //constructor
-		outerGeom.mergeVertices();
-
-		// for (var i=0; i<outerGeom.vertices.length; i++){
-		// 	outerGeom.vertices[i].x += Math.cos(Math.random()*2*Math.PI) * 10*Math.random() ;
-		// 	outerGeom.vertices[i].x += Math.sin(Math.random()*2*Math.PI) * 10*Math.random() ;
-		// }
-
-		var glowMat = new THREE.ShaderMaterial( 
-		{
-		    uniforms: 
-			{ 
-				"c":   { type: "f", value: 1.0 },
-				"p":   { type: "f", value: 1.4 },
-				glowColor: { type: "c", value: new THREE.Color(COLORS.Blue) },
-				viewVector: { type: "v3", value: World.camera.position }
-			},
-			vertexShader:   document.getElementById( 'vertexShader'   ).textContent,
-			fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
-			side: THREE.FrontSide,
-			blending: THREE.AdditiveBlending,
-			transparent: true, 
-			opacity: .5
-		}   );
-
-		var forceField = new THREE.Mesh(outerGeom, glowMat);
-		forceField.position.set(0, 0, 0);
-		// mesh.add(forceField);
-		
-		mesh.position.set(x, y, z);
-		super(mesh, x, y, z);
-		return this;
-	}
-	update(){
-		this.rotate(0, 0, .05);
-	}
-}
-
-class TorusRing extends Molecule{
-	constructor(radius, x, y, z){
-		var dispX, dispY, temp, lightning;
-		var angle = Math.PI/3;
-		var mesh = new THREE.Group();
-		var atoms = [];
-
-		for (var i=0; i<6; i++){
-			angle = i*Math.PI/3; //add rings
-			dispX = radius*Math.cos(angle);
-			dispY = radius*Math.sin(angle);
-			temp = new Torus(12, dispX, dispY, 0);
-			temp.mesh.rotation.x += Math.PI/2;
-			temp.mesh.rotation.y += angle;
-			atoms.push(temp);
-			mesh.add(temp.mesh);
-
-			lightning = new Lightning(1, 50, dispX, dispY, 0); //add lightnings
-			lightning.mesh.rotation.z += angle + Math.PI/3;
-			lightning.mesh.position.x -= 25*Math.cos(angle + Math.PI/3);
-			lightning.mesh.position.y -= 25*Math.sin(angle + Math.PI/3);
-			atoms.push(lightning);
-			mesh.add(lightning.mesh);
-		}
-
-		var nucleus = new iceNucleus(0, 0, 0);
-		mesh.add(nucleus.mesh);
-
-		mesh.position.set(x, y, z);
-
-		atoms = atoms.slice();
-		super(mesh, x, y, z, atoms);
-
-		var _this = this;
-		this.amp = Math.random()*.01;
-		return this;
-	}
-	update(){
-		for (var i=0; i<this.atoms.length; i++){
-				this.atoms[i].update();
-		}
-		this.rotate(Math.random()*this.amp, Math.random()*this.amp, Math.random()*this.amp);
-	}
-}
-
-class Lightning extends Atom{
-	constructor(radius, length, x, y, z){
-		var geom, mat, cylinder;
-		geom = new THREE.CylinderGeometry(radius, radius, length, 2, 50);
-		geom.mergeVertices();
-		var vertices = [];
-
-		for (var i=0; i<geom.vertices.length; i++){
-			var v = geom.vertices[i];
-
-			vertices.push({
-				x: v.x,
-				y: v.y,
-				z: v.z,
-				angle: Math.PI/2, //Math.random() * Math.PI * 2, 
-				amp: Math.random()*3.5,
-				speed: Math.random()*2
-			});
-		}
-
-		mat = new THREE.MeshPhongMaterial({
-			shininess: 50,
-			ambient: 0x050505,
-			emissive: COLORS.Ice,
-			wireframe: true,
-			wireframeLinecap: "round",
-			wireframeLinejoin: "round",
-			wireFrameLinewidth: .1
-		});
-
-		cylinder = new THREE.Mesh(geom, mat);
-		cylinder.position.set(x, y, z);
-		cylinder.rotation.z = Math.PI/2
-
-		super(cylinder, x, y, z);
-		this.vertices = vertices.slice();
-		return this;
-	}
-
-	crackle(){
-		var verts = this.mesh.geometry.vertices;
-		var length = verts.length;
-
-		for (var i=0; i<length; i++){
-			var v = verts[i];
-			var vprops = this.vertices[i];
-
-			// v.x = vprops.x + Math.cos(vprops.angle)*vprops.amp;
-			v.x = vprops.x + Math.sin(vprops.angle)*vprops.amp;
-
-			vprops.angle += vprops.speed;
-		}
-
-		this.mesh.geometry.verticesNeedUpdate = true;
-		// this.mesh.rotation.x += .0025;
-	}
-
-	update(){
-		this.crackle();
-	}
-}
- 
-class IceCrystal extends Atom{ //construct them with radius 1
-	constructor(radius, x, y, z){
-		var mesh = new THREE.Group();
-
-		var geom = new THREE.TorusGeometry(1, 10, 4, 25, 6.3);
-		var mat = new THREE.MeshBasicMaterial({transparent: true, opacity: 1, shading: THREE.SmoothShading});
-
-		var centralMesh = new THREE.Mesh(geom, mat);
-		centralMesh.rotation.x += Math.PI/2;
-		centralMesh.position.set(0, 0, 0);
-
-		var sphereGeom = new THREE.SphereGeometry(1, 32, 32);
-		var sphereMeshTop = new THREE.Mesh(sphereGeom, mat);
-		var sphereMeshBottom = sphereMeshTop.clone();
-		sphereMeshTop.position.set(0, 15, 0);
-		sphereMeshBottom.position.set(0, -15, 0);
-
-		mesh.add(centralMesh);
-		mesh.add(sphereMeshTop);
-		mesh.add(sphereMeshBottom);
-		mesh.position.set(x, y, z);
-
-		super(mesh, x, y, z);
-		return this;
-	}
-
-	mapToCube(cubeCamera){
-		for(var i=0; i<this.mesh.children.length; i++){
-			this.mesh.children[i].material.envMap = cubeCamera.renderTarget;
-		}
-	}
-
-	update(){
-		this.mesh.children[0].geometry.arc -= .01;
-		this.mesh.rotation.x += .01;
-		this.mesh.rotation.y += .01;
-		this.mesh.rotation.z += .01;
-	}
-}
-
-class IceLayer extends Molecule{
-	constructor(radius, x, y, z, hasNucleus, numNodes, spinDirection, cubeCamera){ //pass in "nucleus" argument as 1 or 0 only (T/F)
-		var dispX, dispY, temp, lightning;
-		var angle = 2*Math.PI/numNodes;
-		var tempAngle;
-		var mesh = new THREE.Group();
-		var atoms = [];
-
-		for (var i=0; i<numNodes; i++){
-			tempAngle = i*angle; //add rings
-			dispX = radius*Math.cos(tempAngle);
-			dispY = radius*Math.sin(tempAngle);
-			temp = new IceCrystal(1, dispX, dispY, 0);
-			temp.mesh.rotation.x += Math.PI/2;
-			temp.mesh.rotation.y += angle;
-			atoms.push(temp);
-			mesh.add(temp.mesh);
-
-			// lightning = new Lightning(1, 50, dispX, dispY, 0); //add lightnings
-			// lightning.mesh.rotation.z += angle + Math.PI/3;
-			// lightning.mesh.position.x -= 25*Math.cos(angle + Math.PI/3);
-			// lightning.mesh.position.y -= 25*Math.sin(angle + Math.PI/3);
-			// atoms.push(lightning);
-			// mesh.add(lightning.mesh);
-		}
-
-		if (hasNucleus){
-			var nucleus = new IceCube(0, 0, 0);
-			nucleus.mesh.rotation.x = Math.PI/2;
-			mesh.add(nucleus.mesh);
-			atoms.push(nucleus);
-		}
-
-		mesh.position.set(x, y, z);
-		atoms = atoms.slice();
-		super(mesh, x, y, z, atoms);
-
-		var _this = this;
-
-		for (var i=0; i<this.atoms.length-hasNucleus; i++){ 
-			this.atoms[i].mapToCube(cubeCamera);
-		}
-		
-		if (spinDirection == 0)
-			this.spin = -1;
-		else
-			this.spin = 1;
-
-		return this;
-	}
-
-	update(){
-		for(var i=0; i<this.atoms.length; i++){
-			this.atoms[i].update();
-		}
-		this.mesh.rotation.z += .01*this.spin;
-	}
-}
-
-class LightningCircle extends Atom{
-	constructor(radius, x, y, z){
-		var geom, mat, circle;
-		geom = new THREE.TorusGeometry(radius, .75, 10, 65);
-		geom.mergeVertices();
-		var vertices = [];
-
-		for (var i=0; i<geom.vertices.length; i++){
-			var v = geom.vertices[i];
-
-			vertices.push({
-				x: v.x,
-				y: v.y,
-				z: v.z,
-				angle: Math.PI/2, //Math.random() * Math.PI * 2, 
-				amp: Math.random()*3.5,
-				speed: Math.random()*2
-			});
-		}
-
-		mat = new THREE.MeshPhongMaterial({
-			shininess: 50,
-			ambient: 0x050505,
-			emissive: COLORS.Ice,
-			wireframe: true,
-			wireframeLinecap: "round",
-			wireframeLinejoin: "round",
-			wireFrameLinewidth: .1
-		});
-
-		circle = new THREE.Mesh(geom, mat);
-		circle.position.set(x, y, z);
-		circle.rotation.z = Math.PI/2
-
-		super(circle, x, y, z);
-		this.vertices = vertices.slice();
-		return this;
-	}
-
-	crackle(){
-		var verts = this.mesh.geometry.vertices;
-		var length = verts.length;
-
-		for (var i=0; i<length; i++){
-			var v = verts[i];
-			var vprops = this.vertices[i];
-
-			// v.x = vprops.x + Math.cos(vprops.angle)*vprops.amp;
-			v.x = vprops.x + Math.sin(vprops.angle)*vprops.amp;
-
-			vprops.angle += vprops.speed;
-		}
-
-		this.mesh.geometry.verticesNeedUpdate = true;
-		// this.mesh.rotation.x += .0025;
-	}
-
-	update(){
-		this.crackle();
-	}
-}
-
-class IceCube extends Atom{
-	constructor(x, y, z){
-		var mesh = new THREE.Group();
-		var mat = new THREE.MeshPhongMaterial({ //use this material for the cylinder (inner)
-			shininess: 25,
-			ambient: 0x050505,
-			specular: 0xffffff,
-			emissive: COLORS.Ice,
-			color: COLORS.Blue
-		});
-
-		var cylinderGeom = new THREE.CylinderGeometry(5, 10, 15, 3, 1);
-		var cylinder = new THREE.Mesh(cylinderGeom, mat);
-		cylinder.position.set(0, 0, 0);
-		mesh.add(cylinder);
-
-		var lightningCircles = [];
-		var temp;
-
-		for (var i=1; i>-2; i--){
-			temp = new LightningCircle(15, 0, 0, 0);
-			temp.mesh.rotation.x = Math.PI/2;
-			temp.mesh.position.y = i*8;
-			mesh.add(temp.mesh);
-			lightningCircles.push(temp);
-		}
-
-		mesh.position.set(x, y, z);
-		super(mesh, x, y, z);
-		this.lightningCircles = lightningCircles;
-	}
-
-	update(){
-		for (var i=0; i<this.lightningCircles.length; i++){
-			this.lightningCircles[i].update();
-		}
-		this.mesh.rotation.x += .01*Math.random();
-		this.mesh.rotation.y += .02*Math.random();
-		this.mesh.rotation.z += .03*Math.random();
-	}
-}
-
-class IceTube extends Item{
-	constructor(x, y, z, rotation, length){
-		var mesh = new THREE.Group();
-		var layers = [];
-
-		var cubeCamera = new THREE.CubeCamera(World.near, World.far, 256);
-		cubeCamera.renderTarget.minFilter = THREE.LinearMipMapLinearFilter;
-		cubeCamera.position.set(x, y, z+120); //set right in front of the layer
-		World.scene.add(cubeCamera);
-
-		for (var i=1; i<length+1; i++){
-			if (i==1)
-				temp = new IceLayer(50*i, 0, 0, z+100*i, 1, 3*i, i%2, cubeCamera);
-			else{
-				temp = new IceLayer(50*i, 0, 0, z+100*i, 0, 3*i, i%2, cubeCamera);
-			}
-
-			layers.push(temp);
-			mesh.add(temp.mesh);
-		}
-
-		mesh.rotation.y = rotation;
-
-		super(mesh, x, y, z);
-		this.mesh = mesh;
-		this.layers = layers;
-		this.cubeCamera = cubeCamera;
-	}
-
-	update(){
-		for(var i=0; i<this.layers.length; i++){
-			this.layers[i].update();
-		}
-		this.cubeCamera.updateCubeMap(World.renderer, World.scene);
-	}
-}
-
-class Background extends Item{
-	constructor(height, x, y, z){
-		var geom = new THREE.SphereGeometry(200, 32, 32);
-		var material =  new THREE.MeshBasicMaterial({transparent: true, opacity: 1, color: COLORS.Red, shading: THREE.SmoothShading});
-		// material.envMap = World.cubeCamera.renderTarget;
-
-		var mesh = new THREE.Mesh(geom, material);
-		mesh.position.set(x, y, z);
-
-		super(mesh, x, y, z);
-		return this;
-	}
-
-	update(){
-		// this.mesh.rotation.y += Math.PI/2/360;
+	removeEventListeners(){
+		window.removeEventListener('mousedown', addIce);
+		window.removeEventListener('mousedown', spawnWater);
+		window.removeEventListener('mousedown', distortWaterBackground);
+		window.removeEventListener('mousedown', selectScene);
 	}
 }
 
@@ -781,6 +552,64 @@ function handleMouseMove(e){
     mouse.y = e.clientY;
 }
 
+function selectScene(e){ //select scene from title using raycasting
+	var x, y;
+	var raycaster = new THREE.Raycaster();
+	var mouse = new THREE.Vector2();
+	var iron = World.titleIcons[0];
+	var ice = World.titleIcons[1];
+	var metal = World.titleIcons[2];
+	var water = World.titleIcons[3];
+	var mdma = World.titleIcons[4];
+
+	mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+
+	raycaster.setFromCamera(mouse, World.camera);
+	var intersects = raycaster.intersectObjects(World.titleIcons, true);
+
+	for (var i=0; i<intersects.length; i++){
+		for (var k=0; k<World.titleIcons.length; k++){
+			if (intersects[i].object == World.titleIcons[k]){
+				distortTitleBackground();
+				if (intersects[i].object == iron){
+					World.titleIconObjects[0].spinWildly();
+					setTimeout(function(){
+						World.changeScene('iron');
+					}, 1000);
+				} 
+				else if (intersects[i].object == metal){
+					World.titleIconObjects[2].spinWildly();
+					setTimeout(function(){
+						World.changeScene('metal');
+					}, 1000);
+				}
+				else if (intersects[i].object == mdma){
+					World.titleIconObjects[4].spinWildly();
+					setTimeout(function(){
+						World.changeScene('mdma');
+					}, 1000);
+				}
+			}
+			else if (intersects[i].object.parent.parent == World.titleIcons[k]){
+				distortTitleBackground();
+				if (intersects[i].object.parent.parent == water){
+					World.titleIconObjects[3].spinWildly();
+					setTimeout(function(){
+						World.changeScene('water');
+					}, 1000);
+				} 
+				else if (intersects[i].object.parent.parent == ice){
+					World.titleIconObjects[1].spinWildly();
+					setTimeout(function(){
+						World.changeScene('ice');
+					}, 1000);
+				}
+			}
+		}
+	}
+}
+
 // window.addEventListener('mousemove', handleMouseMove);
 
 //render
@@ -788,6 +617,6 @@ function handleMouseMove(e){
 var World = new WORLD();
 
 World.createLights();
-World.populate();
+World.populateTitle();
 
 loop();
