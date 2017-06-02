@@ -124,10 +124,10 @@ class Title extends Item{
 class TitleGlobe extends Item{
 	constructor(radius, x, y, z){
 		var mesh, geom, mat;
-		var sampleTexture = new THREE.TextureLoader().load('/assets/images/microscopy2.jpg');
+		var sampleTexture = new THREE.TextureLoader().load('assets/images/microscopy2.jpg');
 		sampleTexture.wrapS = sampleTexture.wrapT = THREE.RepeatWrapping;
 
-		var noiseTexture = new THREE.TextureLoader().load('/assets/images/cloud.png');
+		var noiseTexture = new THREE.TextureLoader().load('assets/images/cloud.png');
 		noiseTexture.wrapS = noiseTexture.wrapT = THREE.RepeatWrapping;
 
 		var customUniforms = {
@@ -143,7 +143,7 @@ class TitleGlobe extends Item{
 			uniforms: customUniforms,
 			vertexShader: document.getElementById('vertexShader').textContent,
 			fragmentShader: document.getElementById('fragmentShader').textContent,
-			// map: THREE.ImageUtils.loadTexture('/assets/images/carbon.jpg')
+			// map: THREE.ImageUtils.loadTeassets/images/carbon.jpg')
 		});
 
 		// mat = new THREE.MeshBasicMaterial({color: COLORS.Blue});
@@ -349,10 +349,10 @@ class CubicIce extends Molecule{
 class GlobalWaterSphere extends Item{
 	constructor(radius, x, y, z){
 		var mesh, geom, mat;
-		var sampleTexture = new THREE.TextureLoader().load('/assets/images/ocean.png');
+		var sampleTexture = new THREE.TextureLoader().load('assets/images/ocean.png');
 		sampleTexture.wrapS = sampleTexture.wrapT = THREE.RepeatWrapping;
 
-		var noiseTexture = new THREE.TextureLoader().load('/assets/images/cloud.png');
+		var noiseTexture = new THREE.TextureLoader().load('assets/images/cloud.png');
 		noiseTexture.wrapS = noiseTexture.wrapT = THREE.RepeatWrapping;
 
 		var customUniforms = {
@@ -368,7 +368,7 @@ class GlobalWaterSphere extends Item{
 			uniforms: customUniforms,
 			vertexShader: document.getElementById('vertexShader').textContent,
 			fragmentShader: document.getElementById('fragmentShader').textContent,
-			// map: THREE.ImageUtils.loadTexture('/assets/images/carbon.jpg')
+			// map: THREE.ImageUtils.loadTeassets/images/carbon.jpg')
 		});
 
 		geom = new THREE.SphereGeometry(radius, 30, 30);
@@ -1519,10 +1519,10 @@ class MDMALattice extends Molecule{
 
 class MDMABackground extends Item{
 	constructor(x, y, z){
-		var sampleTexture = new THREE.TextureLoader().load('/assets/images/mdma2.jpg');
+		var sampleTexture = new THREE.TextureLoader().load('assets/images/mdma2.jpg');
 		sampleTexture.wrapS = sampleTexture.wrapT = THREE.RepeatWrapping;
 
-		var noiseTexture = new THREE.TextureLoader().load('/assets/images/cloud.png');
+		var noiseTexture = new THREE.TextureLoader().load('assets/images/cloud.png');
 		noiseTexture.wrapS = noiseTexture.wrapT = THREE.RepeatWrapping;
 
 		var customUniforms = {
@@ -1538,7 +1538,7 @@ class MDMABackground extends Item{
 			uniforms: customUniforms,
 			vertexShader: document.getElementById('vertexShader').textContent,
 			fragmentShader: document.getElementById('fragmentShader').textContent,
-			// map: THREE.ImageUtils.loadTexture('/assets/images/carbon.jpg')
+			// map: THREE.ImageUtils.loadTeassets/images/carbon.jpg')
 		});
 
 		var mesh = new THREE.Mesh(new THREE.SphereGeometry(WIDTH*2, 50, 50), mat);

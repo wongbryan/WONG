@@ -292,7 +292,7 @@ class WORLD{
 	    var _this = this;
 	    var icons = [];
 	    loader = new THREE.FontLoader();
-	    loader.load('/assets/ultra.json', function(font){
+	    loader.load('assets/ultra.json', function(font){
 	      var geometry, mat, mesh;
 	      geometry = new THREE.TextGeometry('STATES', {
 	        font: font,
