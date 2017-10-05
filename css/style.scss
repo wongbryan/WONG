@@ -248,8 +248,8 @@ body{
 		}
 	}
 	#container{
-		width: 75vh;
-		height: 75vh;
+		width: 50vh;
+		height: 50vh;
 		margin: auto;
 		canvas{
 			@include absolute-center();

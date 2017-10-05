@@ -151,8 +151,8 @@ body {
       height: 50vh;
       margin-bottom: 25px; } }
   .main #container {
-    width: 75vh;
-    height: 75vh;
+    width: 50vh;
+    height: 50vh;
     margin: auto;
     margin-bottom: 50px; }
     .main #container canvas {
