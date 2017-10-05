@@ -241,12 +241,6 @@ body{
 	z-index: -1;
 
 	margin-bottom: 35vh;
-	@media screen and (max-width: 768px){
-		#container{
-			height: 50vh;
-			margin-bottom: 25px;
-		}
-	}
 	#container{
 		width: 50vh;
 		height: 50vh;
@@ -260,8 +254,9 @@ body{
 
 	@media screen and (max-width: 768px){
 		#container{
-			height: 50vh;
 			width: 50vh;
+			height: 50vh;
+			margin-bottom: 10px;
 		}
 	}
 
@@ -359,17 +354,6 @@ body{
 			margin-bottom: 20px;
 		}
 
-		@media screen and (max-width: 768px){
-			header{
-				font-size: 40px;
-				margin-bottom: 12px;
-			}
-
-			p{
-				font-size: 30px;
-			}
-		}
-
 		header{
 			font-weight: bold;
 			font-family: $Playfair;
@@ -397,6 +381,7 @@ body{
 			font-family: $Playfair;
 			font-weight: bold;
 		}
+
 	}
 	
 }

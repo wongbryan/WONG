@@ -146,10 +146,6 @@ body {
 .main {
   z-index: -1;
   margin-bottom: 35vh; }
-  @media screen and (max-width: 768px) {
-    .main #container {
-      height: 50vh;
-      margin-bottom: 25px; } }
   .main #container {
     width: 50vh;
     height: 50vh;
@@ -162,8 +158,9 @@ body {
       transform: translate(-50%, -50%); }
   @media screen and (max-width: 768px) {
     .main #container {
+      width: 50vh;
       height: 50vh;
-      width: 50vh; } }
+      margin-bottom: 10px; } }
   .main .line {
     height: 10px;
     width: 30px;
@@ -225,12 +222,6 @@ body {
     margin-bottom: 20px; }
     .work .project .domImage img {
       height: 35vh; }
-  @media screen and (max-width: 768px) {
-    .work .project header {
-      font-size: 40px;
-      margin-bottom: 12px; }
-    .work .project p {
-      font-size: 30px; } }
   .work .project header {
     font-weight: bold;
     font-family: "Playfair Display";
