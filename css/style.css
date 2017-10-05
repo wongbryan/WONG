@@ -222,6 +222,8 @@ body {
     margin-bottom: 20px; }
     .work .project .domImage img {
       height: 35vh; }
+  .work .project header, .work .project p {
+    pointer-events: none; }
   .work .project header {
     font-weight: bold;
     font-family: "Playfair Display";

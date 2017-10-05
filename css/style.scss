@@ -354,6 +354,10 @@ body{
 			margin-bottom: 20px;
 		}
 
+		header, p{
+			pointer-events: none;
+		}
+
 		header{
 			font-weight: bold;
 			font-family: $Playfair;

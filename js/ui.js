@@ -63,3 +63,8 @@ container.addEventListener("mousedown", mousedown);
 container.addEventListener("mouseup", mouseup);
 //Also clear the interval when user leaves the window with mouse
 container.addEventListener("mouseout", mouseup);
+
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+	container.addEventListener("touchstart", mousedown);
+	container.addEventListener("touchend", mouseup);
+}
