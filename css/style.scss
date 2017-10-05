@@ -160,12 +160,12 @@ body{
 }
 
 .openTop{
-	animation: slideUp .7s forwards cubic-bezier(.86,.02,.93,.66);
+	animation: slideUp .5s forwards linear;
 	animation-delay: .6s;
 }
 
 .openBottom{
-	animation: slideDown .7s forwards cubic-bezier(.86,.02,.93,.66);
+	animation: slideDown .5s forwards linear;
 	animation-delay: .6s;
 }
 
@@ -190,7 +190,6 @@ body{
 }
 
 .container{
-	pointer-events: none;
 	padding-top: 16vh;
 	padding-left: 6vh;
 	padding-right: 6vh;

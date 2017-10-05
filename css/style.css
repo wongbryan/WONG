@@ -76,11 +76,11 @@ body {
   bottom: 0; }
 
 .openTop {
-  animation: slideUp 0.7s forwards cubic-bezier(0.86, 0.02, 0.93, 0.66);
+  animation: slideUp .5s forwards linear;
   animation-delay: .6s; }
 
 .openBottom {
-  animation: slideDown 0.7s forwards cubic-bezier(0.86, 0.02, 0.93, 0.66);
+  animation: slideDown .5s forwards linear;
   animation-delay: .6s; }
 
 @keyframes slideUp {
@@ -110,6 +110,8 @@ body {
   padding-top: 16vh;
   padding-left: 6vh;
   padding-right: 6vh; }
+  .container canvas {
+    pointer-events: none; }
 
 #nav {
   display: -webkit-box;
