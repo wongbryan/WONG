@@ -45,6 +45,7 @@ function mouseup(event) {
    }
 
 }
+
 function whilemousedown() {
 	var magnitude = shape.material.uniforms['magnitude'].value;
 		// console.log(magnitude);
