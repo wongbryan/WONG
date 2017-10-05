@@ -157,7 +157,6 @@ body {
   z-index: -1;
   margin-bottom: 35vh; }
   .main #container {
-    cursor: pointer;
     width: 50vh;
     height: 50vh;
     margin: auto;
