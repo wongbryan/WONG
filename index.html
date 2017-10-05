@@ -7,6 +7,7 @@
 	<title>WONG</title>
 </head>
 <body>
+	<div id="loadingLine"></div>
 	<div class="bar top"></div>
 	<div class="bar bottom"></div>
 	<div class="container">
@@ -100,6 +101,31 @@
 <script src="js/ui.js"></script>
 <script>
 	init();
+	THREE.DefaultLoadingManager.onLoad = function ( ) {
+
+		var line = document.getElementById('loadingLine');
+		var bars = document.getElementsByClassName('bar');
+		var top = bars[0], bottom = bars[1];
+
+		top.classList.add('openTop');
+		bottom.classList.add('openBottom');
+		line.classList.add('remove');
+
+	};
+
+
+	THREE.DefaultLoadingManager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
+
+		console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+
+		var line = document.getElementById('loadingLine');
+		var sx = itemsLoaded/itemsTotal;
+
+		line.style.transform = "translate(-50%, -50%) scaleX(" + sx + ")";
+
+
+	};
+
 	initImage('sardines');
 	animate();
 </script>

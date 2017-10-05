@@ -34,9 +34,22 @@ body {
 .bar {
   z-index: 3000;
   position: fixed;
-  height: 10vh;
+  height: 50vh;
   width: 100vw;
   background-color: #000000; }
+
+#loadingLine {
+  width: 100vw;
+  height: 1px;
+  background-color: #ffffff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4000;
+  transform-origin: center;
+  transform: translate(-50%, -50%) scaleX(0);
+  transition: all .5s ease; }
 
 .center {
   position: absolute;
@@ -50,6 +63,37 @@ body {
 .bottom {
   bottom: 0; }
 
+.openTop {
+  animation: slideUp 0.7s forwards cubic-bezier(0.86, 0.02, 0.93, 0.66);
+  animation-delay: .6s; }
+
+.openBottom {
+  animation: slideDown 0.7s forwards cubic-bezier(0.86, 0.02, 0.93, 0.66);
+  animation-delay: .6s; }
+
+@keyframes slideUp {
+  0% {
+    top: 0vh; }
+  100% {
+    top: -40vh; } }
+@keyframes slideDown {
+  0% {
+    bottom: 0vh; }
+  100% {
+    bottom: -40vh; } }
+.remove {
+  animation: remove .6s forwards; }
+
+@keyframes remove {
+  0% {
+    opacity: 1;
+    display: block; }
+  99% {
+    opacity: 0;
+    display: block; }
+  100% {
+    opacity: 0;
+    display: none; } }
 .container {
   padding-top: 16vh;
   padding-left: 6vh;
