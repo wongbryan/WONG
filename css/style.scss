@@ -127,6 +127,7 @@ body{
 	height: 1px;
 	background-color: $White;
 	@include absolute-center();
+	position: fixed;
 	z-index: 4000;
 	transform-origin: center;
 	transform: translate(-50%, -50%) scaleX(0);

@@ -34,8 +34,8 @@ function mouseup(event) {
 	    mousedownID=-1;
 
 	    interval = setInterval(function(){
-	     	if (shape.material.uniforms['magnitude'].value <= .03){
-	     		shape.material.uniforms['magnitude'].value = .03
+	     	if (shape.material.uniforms['magnitude'].value <= .05){
+	     		shape.material.uniforms['magnitude'].value = .05
 	     		clearInterval(interval);
 	     		interval = -1;
 	     		changed = false;
@@ -47,7 +47,7 @@ function mouseup(event) {
 }
 function whilemousedown() {
 	var magnitude = shape.material.uniforms['magnitude'].value;
-		console.log(magnitude);
+		// console.log(magnitude);
 	if (magnitude >= 1.2 && !changed){
 		changed = true;
 		shape.material.uniforms['magnitude'].value = 1.2;
