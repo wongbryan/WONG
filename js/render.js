@@ -89,7 +89,7 @@ function initImage(name){
 			"scale" : { type : "v2", value : distScale},
 			"mouse" : { type : "v2", value : mouse },
 			"resolution" : { type : "v2", value : resolution },
-			"magnitude" : { type : "f", value : .03 }
+			"magnitude" : { type : "f", value : .015 }
 		},
 		side : THREE.DoubleSide,
 		vertexShader : document.getElementById('vertexShader').textContent,

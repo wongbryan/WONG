@@ -312,6 +312,12 @@ body{
 			font-weight: 300;
 			margin-bottom: 30px;
 		}
+		.links{
+			width: 150px;
+			margin: auto;
+			@include flexbox();
+			@include justify-content(space-between);
+		}
 		a{
 			color: $DarkGray;
 			font-family: $Playfair;

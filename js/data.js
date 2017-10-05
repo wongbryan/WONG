@@ -15,9 +15,9 @@ var ImageData = {
 	},
 
 	'robot' : {
-		'texture' : getTexture('assets/images/Background.png'),
-		'aspect' : 721/500,
-		'scale' : 6
+		'texture' : getTexture('assets/images/maciej.png'),
+		'aspect' : 581/385,
+		'scale' : 5
 	}
 }
 
