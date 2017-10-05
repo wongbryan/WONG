@@ -187,6 +187,8 @@ body {
     font-weight: 300;
     color: #6D6E71;
     font-size: 20px;
+    margin-bottom: 2px; }
+  .about p:nth-child(3) {
     margin-bottom: 30px; }
   .about a {
     margin: auto;
