@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="assets/fonts/Playfair/stylesheet.css"/>
+<link rel="stylesheet" type="text/css" href="assets/fonts/Calibre/stylesheet.css"/>
+<link rel="stylesheet" type="text/css" href="css/style.css"/>
+<head>
+	<title>WORK</title>
+</head>
+<body>
+	<div class="bar top"></div>
+	<div class="bar bottom"></div>
+	<div class="container">
+		<div id="nav">
+			<div id="name">
+				<img src="assets/images/wong-chinese.png"/>
+				<span>BRYAN WONG</span>
+			</div>
+			<div class="links">
+				<div class="link">
+					<a href="/">HOME</a>
+				</div>
+				<!-- <div class="link">
+					<a>ABOUT</a>
+				</div> -->
+			</div>
+		</div>
+
+		<div class="wrapper main ">
+			<div id="container"></div>
+			<div class="line"></div>
+			<div class="arrow">
+				<img src="assets/images/arrow.png"/>
+			</div>
+		</div>
+
+		<div class="work">
+
+			<div class="project">
+				<div class="domImage">
+					<img src="assets/images/punpun2.png"/>
+				</div>
+				<header>JOHN MCNEIL STUDIO</header>
+				<p>I interned as a web developer at JMS this past summer. In particular, I worked on a 360 VR experience for their client CA Technologies. Technologies used included Threejs and basic knowledge of fragment shaders. (demo currently not available)</p>
+			</div>
+
+			<div class="project">
+				<div class="domImage">
+					<img src="assets/images/heart.png"/>
+				</div>
+				<header>XIN XIN XIN</header>
+				<p>Birthday present I made for my mom. "Xin" means "heart" in Chinese, and there are three because my mom has three sons. Each "heart" character shows a memory/quote I have of her when you click on it. I used Threejs to import the "heart" character model, then wrote some cool-looking fragment shaders for each heart. Some of the fragment shaders are from Shadertoy (not by me).</p>
+				<div>
+					<a href="http://xinxinx.in">DEMO</a>
+				</div>
+			</div>
+
+			<div class="project">
+				<div class="domImage">
+					<img src="assets/images/papaya.png"/>
+				</div>
+				<header>CREATIVE LABS BRANDING</header>
+				<p>Creative Labs is an organization at UCLA that brings creatives together. Each quarter we have a series of projects (web, VR, mobile apps, etc.) that are open for anyone to work on. I did the website and branding book this year. Why do they both look like fruit catalogs? I was pretty hungry when I mocked them up.</p>
+				<div>
+					<a href="http://wongbryan.design/playground">LINK</a>
+				</div>
+			</div>
+
+			<div class="project">
+				<div class="domImage">
+					<img src="assets/images/square.png"/>
+				</div>
+				<header>MUSIC VISUALIZER</header>
+				<p>Simple music visualizer/particle system. The particles morph into different objects when you click on them and react to the music as it plays. To morph the objects, I fed an array of vertex positions and morph targets to a vertex shader and interpolated the vertices. I then updated the morph targets each time the object changed shapes.</p>
+				<div>
+					<a href="http://wongbryan.design/playground/morph.html">DEMO</a>
+				</div>
+			</div>
+
+			<div class="project">
+				<div class="domImage">
+					<img src="assets/images/playground.png"/>
+				</div>
+				<header>PLAYGROUND</header>
+				<p>This is where I put all my WebGL experiments. Topics covered in here include: shape generation using Perlin noise/fractal brownian motion, particle systems, image distortion, procedural terrain and music visualization.</p>
+				<div>
+					<a href="http://wongbryan.design/playground">DEMO</a>
+				</div>
+			</div>
+
+			<div class="project">
+				<div class="domImage">
+					<img src="assets/images/atom.png"/>
+				</div>
+				<header>PHYSICAL STATES</header>
+				<p>I worked on a molecule visualizer using Threejs last year. We immerse the user in a space filled with certain molecules floating around. The idea was to put the water molecules in a liquid environment, etc. This was my first project with 3D graphics, so many of the effects are achieved pretty inefficiently. Now that I understand how the graphics pipeline works, I could achieve many of the same effects with less overhead.</p>
+				<div>
+					<a href="http://physicalstates.io">LINK</a>
+				</div>
+			</div>
+
+			<div class="project">
+				<div class="domImage">
+					<img src="assets/images/punpun.png"/>
+				</div>
+				<header>A DAY IN LA</header>
+				<p>This is an interactive narrative set in Los Angeles. The user goes through different scenes in LA, such as Santa Monica beach, a rooftop bar and Hollywood. We imported SVGs and animated them with CSS.</p>
+				<div>
+					<a href="https://uclacreativelabs.github.io/a-day-in-la/">LINK</a>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	</div>
+</body>
+
+<script type="vsh" id="vertexShader">
+
+	varying vec2 vUv;
+
+	void main() {
+		vUv = uv;
+
+		gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+	}
+
+</script>
+
+<script type="fsh" id="fragmentShader">
+	uniform sampler2D texture;
+	uniform sampler2D noise;
+	uniform float magnitude;
+	uniform float time;
+	uniform float speed;
+	uniform vec2 scale;
+	uniform vec2 mouse;
+	uniform vec2 resolution;
+
+	varying vec2 vUv;
+
+	void main(){
+		vec2 st = gl_FragCoord.xy/resolution;
+
+		/*get displacement w perlin noise*/
+		vec4 map = texture2D(noise, vUv + time*speed*.01);
+		map -= 0.5;
+
+		/*add sin movement to displacement for slight wave effect*/
+		map.xy *= sin(vUv.y*100.+time*speed);
+		map.xy *= scale * .8 * magnitude;
+
+		/*distortion from mouse*/
+		float radius =  .05;
+		float dist = length(st-mouse);
+		float inCircle = step(dist, radius);
+
+		float extraDistort = (radius-dist)*inCircle*.5;
+
+		map += extraDistort;
+
+		vec4 color = texture2D(texture, vec2(vUv.x - map.x, vUv.y - map.y));
+
+		gl_FragColor = color;
+	}
+
+</script>
+<script src="bower_components/three.js/build/three.min.js"></script>
+<script src="bower_components/three.js/examples/js/controls/OrbitControls.js"></script>
+<script src="js/data.js"></script>
+<script src="js/render.js"></script>
+<script src="js/ui.js"></script>
+<script>
+	init();
+	initImage('robot');
+	animate();
+</script>
+</html>

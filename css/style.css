@@ -1,0 +1,190 @@
+h1, h2, header, p, a, span {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+a {
+  text-decoration: none;
+  position: relative; }
+
+a:before {
+  content: "";
+  position: absolute;
+  background-color: #000000;
+  height: 75%;
+  width: 100%;
+  top: 100%;
+  transition: .1s ease;
+  transform-style: preserve-3d;
+  opacity: 0;
+  transform: rotate(45deg) rotateY(90deg);
+  transform-origin: top left; }
+
+a:hover {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0) !important; }
+
+a:hover:before {
+  opacity: 1;
+  transform: rotate(0deg) rotateY(0deg); }
+
+body {
+  margin: 0;
+  overflow-x: hidden; }
+
+.bar {
+  z-index: 3000;
+  position: fixed;
+  height: 10vh;
+  width: 100vw;
+  background-color: #000000; }
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); }
+
+.top {
+  top: 0; }
+
+.bottom {
+  bottom: 0; }
+
+.container {
+  padding-top: 16vh;
+  padding-left: 6vh;
+  padding-right: 6vh;
+  padding-bottom: 50vh; }
+
+#nav {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -moz-align-items: flex-start;
+  -ms-align-items: flex-start;
+  align-items: flex-start;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  justify-content: space-between;
+  -ms-flex-pack: space-between; }
+  #nav #name {
+    pointer-events: none; }
+    #nav #name img {
+      opacity: .7;
+      width: 17px; }
+    #nav #name span {
+      display: block;
+      font-family: "Playfair Display";
+      font-weight: bold;
+      font-size: 17px; }
+  #nav .link {
+    display: inline-block;
+    margin-left: 70px;
+    perspective: 800px; }
+    #nav .link a {
+      cursor: pointer;
+      font-family: "Playfair Display";
+      font-size: 15px;
+      color: #6D6E71;
+      transition: all .1s;
+      position: relative; }
+
+.main {
+  z-index: -1;
+  margin-bottom: 35vh; }
+  .main #container {
+    width: 75vh;
+    height: 75vh;
+    margin: auto;
+    margin-bottom: 50px; }
+    .main #container canvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); }
+  @media screen and (min-width: 480px) {
+    .main #container {
+      height: 50vh;
+      width: 50vh; } }
+  .main .line {
+    height: 10px;
+    width: 30px;
+    margin: auto;
+    margin-bottom: 15px;
+    background-color: #000000; }
+  .main .arrow {
+    animation: bob 1.2s infinite alternate;
+    margin: auto;
+    text-align: center; }
+    .main .arrow img {
+      height: 25px; }
+@keyframes bob {
+  0% {
+    transform: translateY(0px); }
+  100% {
+    transform: translateY(15px); } }
+.about {
+  text-align: center; }
+  .about header, .about p {
+    pointer-events: none; }
+  .about header {
+    margin-bottom: 10px;
+    font-family: "Playfair Display";
+    font-weight: bold;
+    font-size: 22px; }
+  .about p {
+    margin: 0;
+    font-family: "Calibre";
+    font-weight: 300;
+    color: #6D6E71;
+    font-size: 20px;
+    margin-bottom: 30px; }
+  .about a {
+    margin: auto;
+    font-family: "Playfair Display";
+    font-weight: normal;
+    font-size: 15px;
+    color: #000000;
+    transition: all .1s; }
+  .about a:hover {
+    color: #ffffff;
+    cursor: pointer; }
+
+.work .project {
+  text-align: center;
+  margin: auto;
+  margin-bottom: 200px; }
+  .work .project .domImage {
+    margin-bottom: 20px; }
+    .work .project .domImage img {
+      height: 35vh; }
+  @media screen and (max-width: 486) {
+    .work .project header {
+      font-size: 40px;
+      margin-bottom: 12px; }
+    .work .project p {
+      font-size: 30px; } }
+  .work .project header {
+    font-weight: bold;
+    font-family: "Playfair Display";
+    font-size: 30px;
+    margin-bottom: 12px; }
+  .work .project p {
+    max-width: 600px;
+    margin: 0;
+    margin: auto;
+    font-size: 20px;
+    font-family: "Calibre";
+    color: #6D6E71;
+    font-weight: 300;
+    margin-bottom: 30px; }
+  .work .project a {
+    color: #6D6E71;
+    font-family: "Playfair Display";
+    font-weight: bold; }
+
+/*# sourceMappingURL=style.css.map */
