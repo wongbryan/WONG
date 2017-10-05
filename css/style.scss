@@ -196,11 +196,18 @@ body{
 			opacity: .7;
 			width: 17px;
 		}
+
 		span{
 			display: block;
 			font-family: $Playfair;
 			font-weight: bold;
 			font-size: 17px;
+		}
+
+		@media screen and (max-width: 768px){
+			span{
+				font-size: 15px;
+			}
 		}
 	}
 
@@ -212,13 +219,20 @@ body{
 		display: inline-block;
 		margin-left: 70px;
 		perspective: 800px;
+
 		a{
 			cursor: pointer;
 			font-family: $Playfair;
-			font-size: 15px;
+			// font-size: 15px;
 			color: $DarkGray;
 			transition: all .1s;
 			position: relative;
+		}
+
+		@media screen and (max-width: 768px){
+			a{
+				font-size: 20px;
+			}
 		}
 	}
 }
@@ -227,6 +241,12 @@ body{
 	z-index: -1;
 
 	margin-bottom: 35vh;
+	@media screen and (max-width: 768px){
+		#container{
+			height: 50vh;
+			margin-bottom: 25px;
+		}
+	}
 	#container{
 		width: 75vh;
 		height: 75vh;
@@ -238,7 +258,7 @@ body{
 		margin-bottom: 50px;
 	}
 
-	@media screen and (min-width: 480px){
+	@media screen and (max-width: 768px){
 		#container{
 			height: 50vh;
 			width: 50vh;
@@ -269,6 +289,7 @@ body{
 }
 
 .about{
+
 	text-align: center;
 	header, p{
 		pointer-events: none;
@@ -307,6 +328,18 @@ body{
 		color: $White;
 		cursor: pointer;
 	}
+
+	@media screen and (max-width: 768){
+		header{
+			font-size: 40px;
+		}
+		p{
+			font-size: 30px;
+		}
+		a{
+			font-size: 20px;
+		}
+	}
 }
 
 .work{
@@ -326,7 +359,7 @@ body{
 			margin-bottom: 20px;
 		}
 
-		@media screen and (max-width: 486){
+		@media screen and (max-width: 768px){
 			header{
 				font-size: 40px;
 				margin-bottom: 12px;
