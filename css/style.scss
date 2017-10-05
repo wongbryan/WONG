@@ -190,9 +190,14 @@ body{
 }
 
 .container{
+	pointer-events: none;
 	padding-top: 16vh;
 	padding-left: 6vh;
 	padding-right: 6vh;
+
+	canvas{
+		pointer-events: none;
+	}
 }
 
 #nav{

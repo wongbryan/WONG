@@ -25,6 +25,7 @@ function onMouseMove( event ) {
 	var mouseX = event.clientX, mouseY = event.clientY;
 	follower.style.top = mouseY + "px";
 	follower.style.left = mouseX + "px";
+
 	mouse.x = ( event.clientX / window.innerWidth );
 	mouse.y = -( event.clientY / window.innerHeight ) + 1;
 	// console.log("(" + mouse.x + ", " + mouse.y + ")");
@@ -38,11 +39,10 @@ function mousedown(event) {
 		interval = -1;
 	}
 
-	follower.style.display = "block";
+	follower.style.display = "none";
 }
 
 function mouseup(event) {
-   follower.style.display = "none";
    if(mousedownID!=-1) {  //Only stop if exists
 	    clearInterval(mousedownID);
 	    mousedownID=-1;
@@ -66,7 +66,6 @@ function whilemousedown() {
 	if (magnitude >= 1.2 && !changed){
 		changed = true;
 		changeBase = true;
-		follower.style.display = "none";
 		shape.material.uniforms['magnitude'].value = 1.2;
 		// changeImage('robot');
 	}
@@ -75,11 +74,25 @@ function whilemousedown() {
 }
 
 //Assign events
-window.addEventListener('mousemove', onMouseMove);
-container.addEventListener("mousedown", mousedown);
-container.addEventListener("mouseup", mouseup);
+window.addEventListener('mousemove', onMouseMove, false);
+container.addEventListener("mousedown", mousedown, false);
+container.addEventListener("mouseup", mouseup, false);
 //Also clear the interval when user leaves the window with mouse
-container.addEventListener("mouseout", mouseup);
+container.addEventListener("mouseout", mouseup, false);
+
+function showInstructions(event){
+	event.stopPropagation();
+	follower.style.display = "block";
+}
+
+function hideInstructions(event){
+	event.stopPropagation();
+	follower.style.display = "none";
+}
+
+container.addEventListener("mouseenter", showInstructions, false);
+
+container.addEventListener("mouseleave", hideInstructions, false);
 
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 	container.addEventListener("touchstart", mousedown);
