@@ -31,6 +31,17 @@ body {
   margin: 0;
   overflow-x: hidden; }
 
+#instructions {
+  pointer-events: none;
+  position: fixed;
+  display: none;
+  background-color: #000000; }
+  #instructions span {
+    pointer-events: none;
+    font-family: "Playfair Display";
+    font-size: 12px;
+    color: #ffffff; }
+
 .bar {
   z-index: 3000;
   position: fixed;
@@ -146,6 +157,7 @@ body {
   z-index: -1;
   margin-bottom: 35vh; }
   .main #container {
+    cursor: pointer;
     width: 50vh;
     height: 50vh;
     margin: auto;

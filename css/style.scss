@@ -114,6 +114,19 @@ body{
 	overflow-x: hidden;
 }
 
+#instructions{
+	pointer-events: none;
+	position: fixed;
+	display: none;
+	span{
+		pointer-events: none;
+		font-family: $Playfair;
+		font-size: 12px;
+		color: $White;
+	}
+	background-color: $Black;
+}
+
 .bar{
 	z-index: 3000;
 	position: fixed;
@@ -241,6 +254,7 @@ body{
 
 	margin-bottom: 35vh;
 	#container{
+		cursor: pointer;
 		width: 50vh;
 		height: 50vh;
 		margin: auto;

@@ -17,7 +17,18 @@ function changeImage(name){
 var mousedownID = -1; 
 var interval = -1; 
 var changed = false;
+var changeBase = false;
 var container = document.getElementById('container');
+var follower = document.getElementById('instructions');
+
+function onMouseMove( event ) {
+	var mouseX = event.clientX, mouseY = event.clientY;
+	follower.style.top = mouseY + "px";
+	follower.style.left = mouseX + "px";
+	mouse.x = ( event.clientX / window.innerWidth );
+	mouse.y = -( event.clientY / window.innerHeight ) + 1;
+	// console.log("(" + mouse.x + ", " + mouse.y + ")");
+}
 
 function mousedown(event) {
 	if(mousedownID==-1)  
@@ -26,15 +37,18 @@ function mousedown(event) {
 		clearInterval(interval);
 		interval = -1;
 	}
+
+	follower.style.display = "block";
 }
 
 function mouseup(event) {
+   follower.style.display = "none";
    if(mousedownID!=-1) {  //Only stop if exists
 	    clearInterval(mousedownID);
 	    mousedownID=-1;
 
 	    interval = setInterval(function(){
-	     	if (shape.material.uniforms['magnitude'].value <= .05){
+	     	if (shape.material.uniforms['magnitude'].value <= .05 ){
 	     		shape.material.uniforms['magnitude'].value = .05
 	     		clearInterval(interval);
 	     		interval = -1;
@@ -51,6 +65,8 @@ function whilemousedown() {
 		// console.log(magnitude);
 	if (magnitude >= 1.2 && !changed){
 		changed = true;
+		changeBase = true;
+		follower.style.display = "none";
 		shape.material.uniforms['magnitude'].value = 1.2;
 		// changeImage('robot');
 	}
@@ -59,6 +75,7 @@ function whilemousedown() {
 }
 
 //Assign events
+window.addEventListener('mousemove', onMouseMove);
 container.addEventListener("mousedown", mousedown);
 container.addEventListener("mouseup", mouseup);
 //Also clear the interval when user leaves the window with mouse

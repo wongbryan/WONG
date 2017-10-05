@@ -9,12 +9,6 @@ var shape;
 var distScale = new THREE.Vector2(1., 1.);
 var geom, shapeMat;
 
-function onMouseMove( event ) {
-	mouse.x = ( event.clientX / window.innerWidth );
-	mouse.y = -( event.clientY / window.innerHeight ) + 1;
-	// console.log("(" + mouse.x + ", " + mouse.y + ")");
-}
-
 function resize(){
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
@@ -51,7 +45,6 @@ function init() {
 	scene.add(ambientLight);
 
 	window.addEventListener('resize', resize);
-	window.addEventListener('mousemove', onMouseMove);
 }
 
 function update(){
