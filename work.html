@@ -203,7 +203,9 @@
 		top.classList.add('openTop');
 		bottom.classList.add('openBottom');
 		line.style.transform = "translate(-50%, -50%) scaleX(1)";
-		line.classList.add('remove');
+		setTimeout(function(){
+			line.style.display = "none";
+		}, 700);
 	})
 
 	initImage('robot');

@@ -102,7 +102,8 @@ body {
   100% {
     bottom: -40vh; } }
 .remove {
-  animation: remove .6s forwards; }
+  animation: remove .6s forwards;
+  animation-iteration-count: 1; }
 
 @keyframes remove {
   0% {

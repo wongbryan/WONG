@@ -116,7 +116,9 @@
 
 		top.classList.add('openTop');
 		bottom.classList.add('openBottom');
-		line.classList.add('remove');
+		setTimeout(function(){
+			line.style.display = "none";
+		}, 700);
 
 	};
 

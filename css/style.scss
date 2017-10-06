@@ -189,6 +189,7 @@ body{
 
 .remove{
 	animation: remove .6s forwards;
+	animation-iteration-count: 1;
 }
 
 @keyframes remove{
