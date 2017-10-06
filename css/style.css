@@ -32,11 +32,19 @@ body {
   overflow-x: hidden; }
 
 #instructions {
+  -moz-pointer-events: none;
+  -webkit-pointer-events: none;
+  -o-pointer-events: none;
+  -ms-pointer-events: none;
   pointer-events: none;
   position: fixed;
   display: none;
   background-color: #000000; }
   #instructions span {
+    -moz-pointer-events: none;
+    -webkit-pointer-events: none;
+    -o-pointer-events: none;
+    -ms-pointer-events: none;
     pointer-events: none;
     font-family: "Playfair Display";
     font-size: 12px;
@@ -111,6 +119,10 @@ body {
   padding-left: 6vh;
   padding-right: 6vh; }
   .container canvas {
+    -moz-pointer-events: none;
+    -webkit-pointer-events: none;
+    -o-pointer-events: none;
+    -ms-pointer-events: none;
     pointer-events: none; }
 
 #nav {
@@ -129,6 +141,10 @@ body {
   justify-content: space-between;
   -ms-flex-pack: space-between; }
   #nav #name {
+    -moz-pointer-events: none;
+    -webkit-pointer-events: none;
+    -o-pointer-events: none;
+    -ms-pointer-events: none;
     pointer-events: none; }
     #nav #name img {
       opacity: .7;
@@ -193,6 +209,10 @@ body {
 .about {
   text-align: center; }
   .about header, .about p {
+    -moz-pointer-events: none;
+    -webkit-pointer-events: none;
+    -o-pointer-events: none;
+    -ms-pointer-events: none;
     pointer-events: none; }
   .about header {
     margin-bottom: 10px;
@@ -235,6 +255,10 @@ body {
     .work .project .domImage img {
       height: 35vh; }
   .work .project header, .work .project p {
+    -moz-pointer-events: none;
+    -webkit-pointer-events: none;
+    -o-pointer-events: none;
+    -ms-pointer-events: none;
     pointer-events: none; }
   .work .project header {
     font-weight: bold;

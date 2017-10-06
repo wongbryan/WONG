@@ -77,6 +77,14 @@ $LightGray : #A7A9AC;
 	transition: $value;
 }
 
+@mixin pointer-none {
+  -moz-pointer-events:none;
+  -webkit-pointer-events:none;
+  -o-pointer-events:none;
+  -ms-pointer-events:none;
+  pointer-events:none;
+}
+
 h1, h2, header, p, a, span{
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -115,11 +123,11 @@ body{
 }
 
 #instructions{
-	pointer-events: none;
+	@include pointer-none;
 	position: fixed;
 	display: none;
 	span{
-		pointer-events: none;
+		@include pointer-none;
 		font-family: $Playfair;
 		font-size: 12px;
 		color: $White;
@@ -195,7 +203,7 @@ body{
 	padding-right: 6vh;
 
 	canvas{
-		pointer-events: none;
+		@include pointer-none;
 	}
 }
 
@@ -206,7 +214,7 @@ body{
 	// margin-top: 15vh;
 
 	#name{
-		pointer-events: none;
+		@include pointer-none;
 		img{
 			// display: block;
 			opacity: .7;
@@ -304,7 +312,7 @@ body{
 
 	text-align: center;
 	header, p{
-		pointer-events: none;
+		@include pointer-none;
 	}
 
 	header{
@@ -372,7 +380,7 @@ body{
 		}
 
 		header, p{
-			pointer-events: none;
+			@include pointer-none;
 		}
 
 		header{
