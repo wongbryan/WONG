@@ -9,7 +9,7 @@ function getTexture(path){
 
 var scaleDown = 1;
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-	scaleDown = .7;
+	// scaleDown = .7;
 }
 
 var ImageData = {
