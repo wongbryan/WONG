@@ -1,4 +1,5 @@
 h1, h2, header, p, a, span {
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
@@ -227,7 +228,7 @@ body {
     color: #6D6E71;
     font-size: 20px;
     margin-bottom: 2px; }
-  .about p:nth-child(3) {
+  .about p:nth-child(4) {
     margin-bottom: 30px; }
   .about a {
     margin: auto;

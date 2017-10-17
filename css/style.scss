@@ -86,6 +86,7 @@ $LightGray : #A7A9AC;
 }
 
 h1, h2, header, p, a, span{
+	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -332,7 +333,7 @@ body{
 		margin-bottom: 2px;
 	}
 
-	p:nth-child(3){
+	p:nth-child(4){
 		margin-bottom: 30px;
 	}
 
