@@ -54,8 +54,8 @@ body {
 .bar {
   z-index: 3000;
   position: fixed;
-  height: 50vh;
-  width: 100vw;
+  height: 50%;
+  width: 100%;
   background-color: #000000; }
 
 #loadingLine {
