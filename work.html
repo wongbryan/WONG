@@ -21,7 +21,7 @@
 			</div>
 			<div class="links">
 				<div class="link">
-					<a href="/">HOME</a>
+					<a target="_blank" href="/">HOME</a>
 				</div>
 				<!-- <div class="link">
 					<a>ABOUT</a>
@@ -45,12 +45,57 @@
 
 			<div class="project">
 				<div class="domImage">
+					<img src="assets/images/fruits.png"/>
+				</div>
+				<header>PHARM PHRESH</header>
+				<p>Pharm Phresh is the juiciest music launchpad on the internet. Users can create beats or watch the fruits dance to Nice Feeling's "Fresh." We built the application with Three.js and implemented the loops/sounds with the Web Audio API. We also used some custom shaders in GLSL to achieve certain effects. </p>
+				<div class="links">  
+					<a target="_blank" href="http://fruits.dance">SITE</a>
+					<a target="_blank" href="https://medium.com/@bryanw0ng/pharm-phresh-62a526d8564">CASE</a>
+				</div>
+			</div>
+
+			<div class="project">
+				<div class="domImage">
+					<img src="assets/images/pixels.png"/>
+				</div>
+				<header>PIXEL SHADER</header>
+				<p>I recently wrote a pixel shader for the widely popular Three.js library. The shader is used for post processing scenes and is written in GLSL. I also included an example which should be updated on the live site soon.</p>
+				<div class="links">
+					<a target="_blank" href="https://github.com/mrdoob/three.js/blob/dev/examples/js/shaders/PixelShader.js">LINK</a>
+				</div>
+			</div>
+
+			<div class="project">
+				<div class="domImage">
+					<img src="assets/images/lahacks.svg"/>
+				</div>
+				<header>LA Hacks</header>
+				<p>As a developer and designer on the LA Hacks planning team, I worked on both the user-facing site and the internal application grading system. We used React/Redux to implement both a custom user application form and the grading system used to rate applications. I also worked on a simple Mail Chimp Passthrough for users to join our mailing list. The full application site will open again in the spring.</p>
+				<div class="links">
+					<a target="_blank" href="http://lahacks.com">SITE</a>
+				</div>
+			</div>
+
+			<div class="project">
+				<div class="domImage">
 					<img src="assets/images/punpun2.png"/>
 				</div>
 				<header>JOHN MCNEIL STUDIO</header>
 				<p>I interned as a web developer at JMS this past summer. In particular, I worked at the Annex (their dev department) on a 360 VR experience for their client CA Technologies. We used Threejs to build the application, though basic knowledge of shaders, mobile compatibility and CSS were necessary to achieve certain effects.</p>
-				<div>
-					<a href="http://theannex.webflow.io/">SITE</a>
+				<div class="links">
+					<a target="_blank" href="http://theannex.webflow.io/">SITE</a>
+				</div>
+			</div>
+
+			<div class="project">
+				<div class="domImage">
+					<img src="assets/images/playground.png"/>
+				</div>
+				<header>PLAYGROUND</header>
+				<p>This is where I put all my WebGL sketches/experiments. Topics covered in here include: shape generation using Perlin noise/fractal brownian motion, particle systems, image distortion, procedural terrain and music visualization.</p>
+				<div class="links">
+					<a target="_blank" href="http://wongbryan.design/playground">SITE</a>
 				</div>
 			</div>
 
@@ -60,8 +105,8 @@
 				</div>
 				<header>XIN XIN XIN</header>
 				<p>Birthday present I made for my mom. "Xin" means "heart" in Chinese, and there are three because my mom has three sons. Each "heart" character shows a memory/quote I have of her when you click on it. I used Threejs to import the "heart" character model, then wrote some cool-looking fragment shaders for each heart. Some of the fragment shaders are from Shadertoy (not by me).</p>
-				<div>
-					<a href="http://xinxinx.in">DEMO</a>
+				<div class="links">
+					<a target="_blank" href="http://xinxinx.in">DEMO</a>
 				</div>
 			</div>
 
@@ -72,8 +117,8 @@
 				<header>CREATIVE LABS WEBSITE</header>
 				<p>Creative Labs is an organization at UCLA that brings creatives together. Each quarter we have a series of projects (web, VR, mobile apps, etc.) that are open for anyone to work on. I did the website and branding book this year. Why do they both look like fruit catalogs? I was pretty hungry when I mocked them up. The website again uses Threejs to set up a WebGL scene, and the wavy cloth is rendered by displacing vertices with some Perlin noise and fractal brownian motion.</p>
 				<div class="links">
-					<a href="http://uclacreatives.github.io">SITE</a>
-					<a href="https://www.behance.net/gallery/57438157/Creative-Labs-Brand-Identity?">BOOK</a>
+					<a target="_blank" href="http://uclacreatives.github.io">SITE</a>
+					<a target="_blank" href="https://www.behance.net/gallery/57438157/Creative-Labs-Brand-Identity?">BOOK</a>
 				</div>
 			</div>
 
@@ -83,19 +128,8 @@
 				</div>
 				<header>MUSIC VISUALIZER</header>
 				<p>Simple music visualizer/particle system. The particles morph into different objects when you click on them and react to the music as it plays. To morph the objects, I fed an array of vertex positions and morph targets to a vertex shader and interpolated the vertices. I then updated the morph targets each time the object changed shapes.</p>
-				<div>
-					<a href="http://wongbryan.design/playground/morph.html">DEMO</a>
-				</div>
-			</div>
-
-			<div class="project">
-				<div class="domImage">
-					<img src="assets/images/playground.png"/>
-				</div>
-				<header>PLAYGROUND</header>
-				<p>This is where I put all my WebGL experiments. Topics covered in here include: shape generation using Perlin noise/fractal brownian motion, particle systems, image distortion, procedural terrain and music visualization.</p>
-				<div>
-					<a href="http://wongbryan.design/playground">DEMO</a>
+				<div class="links">
+					<a target="_blank" href="http://wongbryan.design/playground/morph.html">DEMO</a>
 				</div>
 			</div>
 
@@ -105,8 +139,8 @@
 				</div>
 				<header>PHYSICAL STATES</header>
 				<p>I worked on a molecule visualizer using Threejs last year. We immerse the user in a space filled with certain molecules floating around. The idea was to put the water molecules in a liquid environment, etc. This was my first project with 3D graphics, so many of the effects are achieved pretty inefficiently. Now that I understand how the graphics pipeline works, I would do many of the same effects on the GPU to save overhead.</p>
-				<div>
-					<a href="http://physicalstates.io">DEMO</a>
+				<div class="links">
+					<a target="_blank" href="http://physicalstates.io">DEMO</a>
 				</div>
 			</div>
 
@@ -116,8 +150,8 @@
 				</div>
 				<header>A DAY IN LA</header>
 				<p>This is an interactive narrative set in Los Angeles. The user goes through different scenes in LA, such as Santa Monica beach, a rooftop bar and Hollywood. We imported SVGs and animated them with CSS.</p>
-				<div>
-					<a href="https://uclacreativelabs.github.io/a-day-in-la/">DEMO</a>
+				<div class="links">
+					<a target="_blank" href="https://uclacreativelabs.github.io/a-day-in-la/">DEMO</a>
 				</div>
 			</div>
 
@@ -127,8 +161,8 @@
 				</div>
 				<header>THE HOOFPRINT</header>
 				<p>News magazine I worked on in high school!</p>
-				<div>
-					<a href="https://www.behance.net/gallery/49769431/The-Hoofprint">GALLERY</a>
+				<div class="links">
+					<a target="_blank" href="https://www.behance.net/gallery/49769431/The-Hoofprint">GALLERY</a>
 				</div>
 			</div>
 			

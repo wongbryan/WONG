@@ -402,10 +402,10 @@ body{
 			margin-bottom: 30px;
 		}
 		.links{
-			width: 150px;
+			width: 200px;
 			margin: auto;
 			@include flexbox();
-			@include justify-content(space-between);
+			@include justify-content(space-around);
 		}
 		a{
 			color: $DarkGray;
