@@ -145,7 +145,7 @@ body{
 }
 
 #loadingLine{
-	width: 0vw;
+	width: 100vw;
 	height: 1px;
 	background-color: $White;
 	@include absolute-center();
