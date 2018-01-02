@@ -59,7 +59,7 @@ body {
   background-color: #000000; }
 
 #loadingLine {
-  width: 100vw;
+  width: 0vw;
   height: 1px;
   background-color: #ffffff;
   position: absolute;
