@@ -236,6 +236,19 @@ body {
     font-size: 15px;
     color: #000000;
     transition: all .1s; }
+  .about .links {
+    width: 200px;
+    margin: auto;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-around;
+    -moz-justify-content: space-around;
+    -ms-justify-content: space-around;
+    justify-content: space-around;
+    -ms-flex-pack: space-around; }
   .about a:hover {
     color: #ffffff;
     cursor: pointer; }
