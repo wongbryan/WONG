@@ -289,7 +289,7 @@ body {
     font-weight: 300;
     margin-bottom: 30px; }
   .work .project .links {
-    width: 200px;
+    width: 250px;
     margin: auto;
     display: -webkit-box;
     display: -moz-box;
@@ -305,5 +305,8 @@ body {
     color: #6D6E71;
     font-family: "Playfair Display";
     font-weight: bold; }
+
+.bold {
+  font-weight: bold; }
 
 /*# sourceMappingURL=style.css.map */
