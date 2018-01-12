@@ -31,12 +31,12 @@ function init() {
 	
 	camera = new THREE.OrthographicCamera( SCREEN_WIDTH / - 2, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_HEIGHT / - 2, -1000, 1000 );;
 	camera.position.set(0, 0, 1);
-	controls = new THREE.OrbitControls(camera, renderer.domElement);
-	controls.enableRotate = false;
-	controls.enableZoom = false;
-	controls.rotateSpeed = 2.0;
-	controls.panSpeed = 0.8;
-	controls.zoomSpeed = 1.5;
+	// controls = new THREE.OrbitControls(camera, renderer.domElement);
+	// controls.enableRotate = false;
+	// controls.enableZoom = false;
+	// controls.rotateSpeed = 2.0;
+	// controls.panSpeed = 0.8;
+	// controls.zoomSpeed = 1.5;
 
 	scene = new THREE.Scene();
 
@@ -49,7 +49,7 @@ function init() {
 
 function update(){
 	shapeMat.uniforms['time'].value += .05;
-	controls.update();
+	// controls.update();
 }
 
 function animate(){
