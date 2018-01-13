@@ -237,7 +237,7 @@ body {
     color: #000000;
     transition: all .1s; }
   .about .links {
-    width: 200px;
+    width: 375px;
     margin: auto;
     display: -webkit-box;
     display: -moz-box;

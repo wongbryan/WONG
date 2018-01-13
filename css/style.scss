@@ -345,7 +345,7 @@ body{
 	}
 
 	.links{
-		width: 200px;
+		width: 375px;
 		margin: auto;
 		@include flexbox();
 		@include justify-content(space-around);
